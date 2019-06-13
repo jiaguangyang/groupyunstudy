@@ -14,9 +14,10 @@ public class jgyContro {
     @Autowired
     private jgyService jgyservice;
 
-    @RequestMapping("findtest")
+    @RequestMapping("findLunBo")
     @ResponseBody
-    public List<LinkedHashMap<String,Object>> findtest(){
-       return  jgyservice.findtest();
+    public String findLunBo(){
+        return jgyservice.findLunBo();
     }
+
 }

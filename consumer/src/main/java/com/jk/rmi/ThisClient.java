@@ -10,7 +10,9 @@ import java.util.List;
 @FeignClient("queryservice")
 public interface ThisClient {
 
-    @RequestMapping("findtest")
+
+
+    @RequestMapping("findLunBo")
     @ResponseBody
-    List<LinkedHashMap<String, Object>> findtest();
+    String findLunBo();
 }

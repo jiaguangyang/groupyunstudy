@@ -54,6 +54,11 @@
     </build>
 
     <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.18</version>
+        </dependency>
         <!--dependency>
       <groupId>com.jk</groupId>
       <artifactId>[the artifact id of the block to be mounted]</artifactId>

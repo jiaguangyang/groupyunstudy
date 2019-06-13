@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>网易云</title>
+</head>
+<script src="../js/jquery.min.js"></script>
+<link rel="stylesheet" href="/js/layui/css/layui.css">
+<script src="/js/layui/layui.js"></script>
+<body>
+<div style="margin-left:40px;margin-top:20px;float:left"><img src="/img/logo.png" height="74" width="212"/></div>
+<div style="float:right;margin-top:20px;">
+    <pre><a href="https://www.baidu.com" target="blank">管 理 后 台</a>   <a href="www.baidu.com" target="blank">我 的 学 习</a>  <a href="www.baidu.com" target="blank">登录/注册</a>   <!-- <span th:text="${session.username}"></span>  --></div>
+<div style="float:right;margin-top:20px;"> <a href="www.baidu.com"> <img src="/img/car.png"></a> </pre></div>
+<div style="clear:both"></div>
+<div style="width:1341px;height:360px;" class="layui-carousel" id="test1">
+    <div carousel-item  id="divOneId" >
+    </div>
+</div>
+<br>
+<pre>        <b><font size="6px" face="黑体">系统化学习路径</font></b> <font color="#a2a2a2" size="4px"> 网易云课堂六大课程体系，让学习有章有序</font></pre>
+<pre>           <a href=""><img src="/img/1.png"></a>    <a href=""><img src="/img/2.png"></a>    <a href=""><img src="/img/3.png"></a>    <a href=""><img src="/img/4.png"></a>    <a href=""><img src="/img/5.png"></a>    <a href=""><img src="/img/6.png"></a></pre><br>
+<pre>        <b><font size="6px" face="黑体">精选好课</font></b></pre>
+</body>
+<script>
+    layui.use('carousel', function(){
+        var carousel = layui.carousel;
+        //建造实例
+        carousel.render({
+            elem: '#test1'
+            ,width: '100%' //设置容器宽度
+            ,height: '400px'
+            ,arrow: 'hover' //始终显示箭头
+            ,anim: 'fade' //切换动画方式
+        });
+    });
+    function findLunBo(){
+        $.ajax({
+            url:'/jgy/findLunBo',
+            type:'post',
+            success:function(imgData){
+                 var imgData=    JSON.parse(imgData);
+                var ljy="";
+                for(var g=0;g<imgData.length;g++){
+
+                    ljy += "<div><a href='"+imgData[g].href+"' target='_blank'><img height='360px' width='1341px' src='"+imgData[g].url+"'/></a></div>";
+
+                }
+                $("#divOneId").html(ljy);
+
+            },
+            error:function(){
+                alert("查询轮播图失败");
+            }
+        })
+    }
+    $(function () {
+        findLunBo();
+    });
+</script>
+</html>
