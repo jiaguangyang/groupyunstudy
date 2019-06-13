@@ -1,5 +1,6 @@
 package com.jk.controller;
 
+import com.jk.model.Video;
 import com.jk.service.jgyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,12 @@ public class jgyContro {
     @ResponseBody
     public String findLunBo(){
         return jgyservice.findLunBo();
+    }
+
+    @RequestMapping("careCurr")
+    @ResponseBody
+    public List<Video> careCurr(){
+        return  jgyservice.careCurr();
     }
 
 }

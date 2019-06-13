@@ -5,6 +5,12 @@
 
 <mapper namespace="com.jk.mapper.jgyMapper">
 
-
+    <select id="careCurr" resultType="com.jk.model.Video">
+        select tv.videoImg,tv.videoTitle,tv.videoinfo from
+t_video tv INNER JOIN t_teacher tt
+ on tv.teacherId=tt.id
+ inner join (select tt.id, sum(tv.quantity) as tsum from  t_video tv INNER JOIN t_teacher tt on tv.teacherId=tt.id group by tt.id) tsum
+   on tt.id=tsum.id where tsum.tsum>400
+    </select>
 
 </mapper>
