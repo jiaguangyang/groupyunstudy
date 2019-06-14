@@ -31,6 +31,21 @@ public class jgyContro {
     @RequestMapping("careCurr")
     @ResponseBody
     public List<Video> careCurr(){
-        return  thisClient.careCurr();
+        List<Video> videos = thisClient.careCurr();
+        return  videos;
+    }
+
+    @RequestMapping("newCurr")
+    @ResponseBody
+    public List<Video> newCurr(){
+        List<Video> videos = thisClient.newCurr();
+        return  videos;
+    }
+
+    @RequestMapping("freeCurr")
+    @ResponseBody
+    public List<Video> freeCurr(){
+        List<Video> videos = thisClient.freeCurr();
+        return  videos;
     }
 }

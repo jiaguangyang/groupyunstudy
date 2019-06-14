@@ -38,8 +38,16 @@
 </div>
 <br>
 <pre>        <b><font size="6px" face="黑体">系统化学习路径</font></b> <font color="#a2a2a2" size="4px"> 网易云课堂六大课程体系，让学习有章有序</font></pre>
-<pre>           <a href=""><img src="/img/1.png"></a>    <a href=""><img src="/img/2.png"></a>    <a href=""><img src="/img/3.png"></a>    <a href=""><img src="/img/4.png"></a>    <a href=""><img src="/img/5.png"></a>    <a href=""><img src="/img/6.png"></a></pre><br>
+<pre>           <a href=""><img src="/img/1.png"></a>    <a href=""><img src="/img/2.png"></a>    <a href=""><img src="/img/3.png"></a>    <a href=""><img src="/img/4.png"></a>    <a href=""><img src="/img/5.png"></a>    <a href=""><img src="/img/6.png"></a></pre><br><br><br>
 <pre>        <b><font size="6px" face="黑体">精选好课</font></b></pre>
+<span id="jingxuanid"></span>
+<div style="clear:both"></div><br><br>
+<pre>        <b><font size="6px" face="黑体">新课推荐</font></b></pre>
+<span id="newid"></span>
+<div style="clear:both"></div><br><br>
+<pre>        <b><font size="6px" face="黑体">免费好课</font></b></pre>
+<span id="freeid"></span>
+<div style="clear:both"></div><br><br>
 </body>
 <script>
     //注意：导航 依赖 element 模块，否则无法进行功能性操作
@@ -81,20 +89,76 @@
         });
     });
     <!-- 图片轮播脚本结束 -->
+    <!-- 查询精选好课 -->
     function careCurr(){
         $.ajax({
-            url:"jgy/careCurr",
+            url:"/jgy/careCurr",
             type:"post",
             success:function (data) {
-
+                var str='';
+                for (var i=0;i<data.length;i++){
+                    if (i==0){
+                        str+='<div style="float:left;margin-left:50px;"><a href=javaScript:videoinfomation("'+data[i].id+'")><img  width="225" height="125" src="'+data[i].videoImg+'"><br><b>'+data[i].videoTitle+'</b><br>'+data[i].videoinfo+'</a></div>';
+                    }else{
+                        str+='<div style="float:left;margin-left:30px;"><a href=javaScript:videoinfomation("'+data[i].id+'")><img  width="225" height="125" src="'+data[i].videoImg+'"><br><b>'+data[i].videoTitle+'</b><br>'+data[i].videoinfo+'</a></div>'
+                    }
+                }
+                $("#jingxuanid").html(str);
             },error:function () {
 
             }
         });
     }
+    <!-- 查询精选好课结束 -->
+    <!-- 查询新课推荐开始 -->
+    function newCurr() {
+        $.ajax({
+            url:"/jgy/newCurr",
+            type:"post",
+            success:function (data) {
+                var str='';
+                for (var i=0;i<data.length;i++){
+                    if (i==0){
+                        str+='<div style="float:left;margin-left:50px;"><a href=javaScript:videoinfomation("'+data[i].id+'")><img  width="225" height="125" src="'+data[i].videoImg+'"><br><b>'+data[i].videoTitle+'</b><br>'+data[i].videoinfo+'</a></div>';
+                    }else{
+                        str+='<div style="float:left;margin-left:30px;"><a href=javaScript:videoinfomation("'+data[i].id+'")><img  width="225" height="125" src="'+data[i].videoImg+'"><br><b>'+data[i].videoTitle+'</b><br>'+data[i].videoinfo+'</a></div>'
+                    }
+                }
+                $("#newid").html(str);
+            },error:function () {
 
+            }
+        });
+    }
+    <!-- 查询新课推荐结束 -->
+    <!-- 查询免费好课开始 -->
+    function freeCurr() {
+        $.ajax({
+            url:"/jgy/freeCurr",
+            type:"post",
+            success:function (data) {
+                var str='';
+                for (var i=0;i<data.length;i++){
+                    if (i==0){
+                        str+='<div style="float:left;margin-left:50px;"><a href=javaScript:videoinfomation("'+data[i].id+'")><img  width="225" height="125" src="'+data[i].videoImg+'"><br><b>'+data[i].videoTitle+'</b><br>'+data[i].videoinfo+'</a></div>';
+                    }else{
+                        str+='<div style="float:left;margin-left:30px;"><a href=javaScript:videoinfomation("'+data[i].id+'")><img  width="225" height="125" src="'+data[i].videoImg+'"><br><b>'+data[i].videoTitle+'</b><br>'+data[i].videoinfo+'</a></div>'
+                    }
+                }
+                $("#freeid").html(str);
+            },error:function () {
+
+            }
+        });
+    }
+    <!-- 查询免费好课结束 -->
+    function videoinfomation(id){
+        alert(id);
+    }
     $(function () {
             careCurr();
+            newCurr();
+            freeCurr();
     });
 </script>
 </html>

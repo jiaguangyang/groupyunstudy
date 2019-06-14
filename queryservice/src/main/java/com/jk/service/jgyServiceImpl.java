@@ -14,6 +14,7 @@ import redis.clients.jedis.JedisPool;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class jgyServiceImpl implements jgyService {
@@ -47,10 +48,66 @@ public class jgyServiceImpl implements jgyService {
         Jedis jedis = jedisPool.getResource();Integer a =86400000;
         if (StringUtils.isNotEmpty(jedis.get("careCurr"))){
             String careCurr = jedis.get("careCurr");
-            list = (List<Video>) JSONArray.parseArray(careCurr, Video.class);
+            list = JSONArray.parseArray(careCurr, Video.class);
         }else{
             list=   jgymapper.careCurr();
+            jedis.setex("careCurr",86400000,JSON.toJSONString(list));
         }
-        return list;
+        jedis.close();
+        Random random = new Random();
+        List<Video> list1 = new ArrayList<>();
+        int listindex=0;
+        for (int i=0;i<5;i++){
+            listindex = random.nextInt(list.size() - 1);
+            list1.add(list.get(listindex));
+            list.remove(listindex);
+        }
+        return list1;
+    }
+
+    @Override
+    public List<Video> newCurr() {
+        List<Video> list = new ArrayList<>();
+        Jedis jedis = jedisPool.getResource();
+        if (StringUtils.isNotEmpty(jedis.get("newCurr"))){
+            String careCurr = jedis.get("newCurr");
+            list = JSONArray.parseArray(careCurr, Video.class);
+        }else{
+            list=   jgymapper.newCurr();
+            jedis.setex("newCurr",86400000,JSON.toJSONString(list));
+        }
+        jedis.close();
+        Random random = new Random();
+        List<Video> list2 = new ArrayList<>();
+        int listindex=0;
+        for (int i=0;i<5;i++){
+            listindex = random.nextInt(list.size() - 1);
+            list2.add(list.get(listindex));
+            list.remove(listindex);
+        }
+        return list2;
+    }
+
+    @Override
+    public List<Video> freeCurr() {
+        List<Video> list = new ArrayList<>();
+        Jedis jedis = jedisPool.getResource();
+        if (StringUtils.isNotEmpty(jedis.get("freeCurr"))){
+            String careCurr = jedis.get("freeCurr");
+            list = JSONArray.parseArray(careCurr, Video.class);
+        }else{
+            list=   jgymapper.freeCurr();
+            jedis.setex("freeCurr",86400000,JSON.toJSONString(list));
+        }
+        jedis.close();
+        Random random = new Random();
+        List<Video> list2 = new ArrayList<>();
+        int listindex=0;
+        for (int i=0;i<5;i++){
+            listindex = random.nextInt(list.size() - 1);
+            list2.add(list.get(listindex));
+            list.remove(listindex);
+        }
+        return list2;
     }
 }

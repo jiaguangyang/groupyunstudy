@@ -27,4 +27,18 @@ public class jgyContro {
         return  jgyservice.careCurr();
     }
 
+    @RequestMapping("newCurr")
+    @ResponseBody
+    public List<Video> newCurr(){
+        List<Video> videos = jgyservice.newCurr();
+        return  videos;
+    }
+
+    @RequestMapping("freeCurr")
+    @ResponseBody
+    public List<Video> freeCurr(){
+        List<Video> videos = jgyservice.freeCurr();
+        return  videos;
+    }
+
 }
