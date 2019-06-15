@@ -14,5 +14,12 @@ public class page {
     public String loginPopup(){
         return "login";
     }
-
+    @RequestMapping("toteacherLogin")
+    public String teacherLogin(){
+        return "teacherLogin";
+    }
+    @RequestMapping("toregters")
+    public String toregters(){
+        return "regters";
+    }
 }

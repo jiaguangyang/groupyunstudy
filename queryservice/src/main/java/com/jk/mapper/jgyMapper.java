@@ -1,6 +1,7 @@
 package com.jk.mapper;
 
 import com.jk.model.Ossbean;
+import com.jk.model.Video;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
@@ -11,4 +12,6 @@ import java.util.List;
 public interface jgyMapper {
     @Select("select * from t_oss where status=1")
     List<Ossbean> findLunBo();
+
+    List<Video> careCurr();
 }

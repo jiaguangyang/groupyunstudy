@@ -1,5 +1,7 @@
 package com.jk.rmi;
 
+import com.jk.model.Video;
+
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,4 +17,8 @@ public interface ThisClient {
     @RequestMapping("findLunBo")
     @ResponseBody
     String findLunBo();
+
+    @RequestMapping("careCurr")
+    @ResponseBody
+    List<Video> careCurr();
 }

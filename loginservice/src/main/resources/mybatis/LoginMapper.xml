@@ -5,4 +5,14 @@
  <select id="queryName" parameterType="string" resultType="com.jk.model.User">
     select id ,name,password from user WHERE name=#{name}
  </select>
+    <select id="queryZhuying" resultType="com.jk.model.TeacherBean">
+        select id,name as zy from t_zy
+    </select>
+    <select id="queryTeacher" parameterType="string" resultType="string">
+        select teacherAccount from t_teacher where teacherAccount=#{value}
+    </select>
+    <insert id="addUser" parameterType="com.jk.model.TeacherBean">
+        insert into t_teacher (teacherAccount,teacherPwd,teacherPhone,teacherName,teacherInfo,email,jieshao,companyLogo,zy,chec)
+        values (#{teacherAccount},#{teacherPwd},#{teacherPhone},#{teacherName},#{teacherInfo},#{email},#{jieshao},#{companyLogo},#{zy},1)
+    </insert>
 </mapper>

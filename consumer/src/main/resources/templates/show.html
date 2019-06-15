@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>网易云</title>
+</head>
+<script src="../js/jquery.min.js"></script>
+<link rel="stylesheet" href="/js/layui/css/layui.css">
+<script src="/js/layui/layui.js"></script>
+<body>
+<div style="margin-left:40px;margin-top:20px;float:left"><img src="/img/logo.png" height="74" width="212"/></div>
+
+<div style="float:right;margin-top:20px;">
+    <pre><a href="/page/toteacherLogin" target="blank">管 理 后 台</a>   <a href="www.baidu.com" target="blank">我 的 学 习</a> <span id="status"></span>   <!-- <span th:text="${session.username}"></span>  --></pre></div>
+<div style="float:right;margin-top:20px;"> <a href="www.baidu.com"> <img src="/img/car.png"></a> </pre></div>
+<div style="clear:both"></div>
+<ul class="layui-nav layui-bg-blue" lay-filter="">
+    <li class="layui-nav-item"><a href="">首页</a></li>
+    <li class="layui-nav-item">
+        <a href="javascript:;">课程分类</a>
+        <dl class="layui-nav-child"> <!-- 二级菜单 -->
+            <dd><a href="">职场提升</a></dd>
+            <dd><a href="">编程与开发</a></dd>
+            <dd><a href="">AI/数据科学</a></dd>
+            <dd><a href="">产品与运营</a></dd>
+            <dd><a href="">设计创意</a></dd>
+            <dd><a href="">电商运营</a></dd>
+            <dd><a href="">语言学习</a></dd>
+            <dd><a href="">职业考试</a></dd>
+            <dd><a href="">生活兴趣</a></dd>
+        </dl>
+    </li>
+    <li class="layui-nav-item"><a href="">微专业</a></li>
+</ul>
+<div style="width:1341px;height:360px;" class="layui-carousel" id="test1">
+    <div carousel-item  id="divOneId" >
+    </div>
+</div>
+<br>
+<pre>        <b><font size="6px" face="黑体">系统化学习路径</font></b> <font color="#a2a2a2" size="4px"> 网易云课堂六大课程体系，让学习有章有序</font></pre>
+<pre>           <a href=""><img src="/img/1.png"></a>    <a href=""><img src="/img/2.png"></a>    <a href=""><img src="/img/3.png"></a>    <a href=""><img src="/img/4.png"></a>    <a href=""><img src="/img/5.png"></a>    <a href=""><img src="/img/6.png"></a></pre><br>
+<pre>        <b><font size="6px" face="黑体">精选好课</font></b></pre>
+</body>
+<script>
+    //注意：导航 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function(){
+        var element = layui.element;
+
+        //…
+    });
+</script>
+<script>
+    <!-- 图片轮播脚本开始 -->
+    layui.use('carousel', function(){
+        var carousel = layui.carousel;
+        //建造实例
+      var inits=  carousel.render({
+            elem: '#test1'
+            ,width: '100%' //设置容器宽度
+            ,height: '400px'
+            ,arrow: 'hover' //始终显示箭头
+            ,anim: 'fade' //切换动画方式
+        });
+        $.ajax({
+            url:'/jgy/findLunBo',
+            type:'post',
+            success:function(imgData){
+                var imgData=    JSON.parse(imgData);
+                var ljy="";
+                for(var g=0;g<imgData.length;g++){
+
+                    ljy += "<div><a href='"+imgData[g].href+"' target='_blank'><img height='360px' width='1341px' src='"+imgData[g].url+"'/></a></div>";
+
+                }
+                $("#divOneId").append(ljy);
+                inits.reload({elem: '#test1'});//重置轮播图
+            },
+            error:function(){
+                alert("查询轮播图失败");
+            }
+        });
+    });
+    <!-- 图片轮播脚本结束 -->
+    function careCurr(){
+        $.ajax({
+            url:"jgy/careCurr",
+            type:"post",
+            success:function (data) {
+
+            },error:function () {
+
+            }
+        });
+    }
+
+
+    $(function () {
+            careCurr();
+           queryLoginName();
+    });
+    function queryLoginName(){
+        $.ajax({
+            url:"/login/qyertUserName",
+            success:function (data) {
+                // var status=$("#status").val()
+                var html="";
+                if (data!=null&data!=''){
+                    html+=data
+
+                } else {
+                    html+="<a href=\"/page/tologin\" target=\"blank\">登录/注册 </a>"
+
+                }
+                $("#status").html(html)
+            }
+        })
+    }
+</script>
+</html>

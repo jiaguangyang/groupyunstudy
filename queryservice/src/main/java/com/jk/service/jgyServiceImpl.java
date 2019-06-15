@@ -1,14 +1,17 @@
 package com.jk.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.jk.mapper.jgyMapper;
 import com.jk.model.Ossbean;
+import com.jk.model.Video;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -36,5 +39,18 @@ public class jgyServiceImpl implements jgyService {
             return jsonString;
         }
 
+    }
+
+    @Override
+    public List<Video> careCurr() {
+      List<Video> list = new ArrayList<>();
+        Jedis jedis = jedisPool.getResource();Integer a =86400000;
+        if (StringUtils.isNotEmpty(jedis.get("careCurr"))){
+            String careCurr = jedis.get("careCurr");
+            list = (List<Video>) JSONArray.parseArray(careCurr, Video.class);
+        }else{
+            list=   jgymapper.careCurr();
+        }
+        return list;
     }
 }
