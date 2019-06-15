@@ -21,4 +21,12 @@ public interface ThisClient {
     @RequestMapping("careCurr")
     @ResponseBody
     List<Video> careCurr();
+
+    @RequestMapping("newCurr")
+    @ResponseBody
+    List<Video> newCurr();
+
+    @RequestMapping("freeCurr")
+    @ResponseBody
+    List<Video> freeCurr();
 }

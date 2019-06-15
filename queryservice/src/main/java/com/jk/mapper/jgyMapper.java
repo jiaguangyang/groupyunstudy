@@ -14,4 +14,8 @@ public interface jgyMapper {
     List<Ossbean> findLunBo();
 
     List<Video> careCurr();
+
+    List<Video> newCurr();
+
+    List<Video> freeCurr();
 }

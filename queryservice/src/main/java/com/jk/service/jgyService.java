@@ -11,4 +11,8 @@ public interface jgyService {
     String findLunBo();
 
     List<Video> careCurr();
+
+    List<Video> newCurr();
+
+    List<Video> freeCurr();
 }
