@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>${videoName}-网易云课堂</title>
+ </head>
+ <script src="/js/jquery.min.js"></script>
+<link rel="stylesheet" href="/js/layui/css/layui.css">
+<script src="/js/layui/layui.js"></script>
+ <body>
+  <ul class="layui-nav layui-bg-blue" lay-filter="">
+    <li class="layui-nav-item"><a href="">首页</a></li>
+    <li class="layui-nav-item">
+        <a href="javascript:;">课程分类</a>
+        <dl class="layui-nav-child"> <!-- 二级菜单 -->
+            <dd><a href="">职场提升</a></dd>
+            <dd><a href="">编程与开发</a></dd>
+            <dd><a href="">AI/数据科学</a></dd>
+            <dd><a href="">产品与运营</a></dd>
+            <dd><a href="">设计创意</a></dd>
+            <dd><a href="">电商运营</a></dd>
+            <dd><a href="">语言学习</a></dd>
+            <dd><a href="">职业考试</a></dd>
+            <dd><a href="">生活兴趣</a></dd>
+        </dl>
+    </li>
+    <li class="layui-nav-item"><a href="">微专业</a></li>
+</ul>
+ <div style="float: left;margin-left: 80px;margin-top: 60px">
+     <img src="${videoImg}" width="420px" height="200px" />
+ </div>
+  <div style="float: left;margin-left: 80px;margin-top: 60px">
+      <h2> ${videoName}</h2><br>
+      ${quantity}人学过  <div id="test1"></div>  讲师:${teacherName}
+      <h2 style="color: red">￥ ${DisCountPrice}</h2>  <del style="color: #92B8B1">${videoPrice}</del><br><br><br>
+      <a href="/jgy/find?url=show" class="layui-btn layui-btn-normal layui-btn-lg">立即购买</a>
+      <a href="javaScript:addVideotoCar()" class="layui-btn layui-btn-primary">加入购物车</a>
+  </div>
+  <div style="clear:both"></div>
+
+  <div style="margin-left: 80px;margin-top: 60px">
+      <h2>适用人群</h2><br>
+      ${forPeople}<br><br>
+      <h2>课程概述</h2><br>
+      ${summary}
+  </div>
+ </body>
+ <script>
+     function addVideotoCar(){
+         alert("22");
+         location.href="";
+     }
+
+     layui.use(['rate','element'], function(){
+         var rate = layui.rate;
+         var element = layui.element;
+         //渲染
+         var ins1 = rate.render({
+             elem: '#test1'  //绑定元素
+             ,length:5
+             ,value:${score}
+             ,half:true
+             ,readonly:true
+         });
+     });
+ </script>
+
+</html>
