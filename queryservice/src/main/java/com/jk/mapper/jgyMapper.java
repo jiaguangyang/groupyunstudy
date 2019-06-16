@@ -18,4 +18,7 @@ public interface jgyMapper {
     List<Video> newCurr();
 
     List<Video> freeCurr();
+
+    @Select("select * from t_video")
+    List<Video> queryVideoAll();
 }

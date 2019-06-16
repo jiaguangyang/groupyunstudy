@@ -82,6 +82,15 @@
                 }
                 $("#divOneId").append(ljy);
                 inits.reload({elem: '#test1'});//重置轮播图
+                $.ajax({
+                    url:"/jgy/queryVideoAll",
+                    type:"post",
+                    success:function () {
+
+                    },error:function () {
+
+                    }
+                });
             },
             error:function(){
                 alert("查询轮播图失败");
@@ -156,6 +165,7 @@
     <!-- 查询免费好课结束 -->
     function videoinfomation(id){
         alert(id);
+       // location.href="/jgy/find?url=video"+id;
     }
     $(function () {
             careCurr();

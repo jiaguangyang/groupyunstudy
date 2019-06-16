@@ -52,6 +52,7 @@ public class LoginController {
             jedis.close();
             return name;
         }
+        jedis.close();
        return null;
 
 
@@ -101,6 +102,7 @@ public class LoginController {
         }else {
             result.put("code", 1);
             result.put("msg","发送失败");
+            jedis.close();
             return result;
         }
 
@@ -118,6 +120,7 @@ public class LoginController {
             return result;
         } else {
             result.put("msg", "验证码过期");
+            jedis.close();
             return result;
         }
     }

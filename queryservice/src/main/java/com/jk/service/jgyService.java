@@ -15,4 +15,6 @@ public interface jgyService {
     List<Video> newCurr();
 
     List<Video> freeCurr();
+
+    void queryVideoAll();
 }

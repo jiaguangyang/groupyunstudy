@@ -17,6 +17,12 @@ public class jgyContro {
     @Autowired
     private ThisClient thisClient;
 
+    @RequestMapping("queryVideoAll")
+    @ResponseBody
+    public void queryVideoAll(){
+        thisClient.queryVideoAll();
+    }
+
     @RequestMapping("findLunBo")
     @ResponseBody
     public String findLunBo(){

@@ -41,4 +41,10 @@ public class jgyContro {
         return  videos;
     }
 
+    @RequestMapping("queryVideoAll")
+    @ResponseBody
+    public void queryVideoAll(){
+        jgyservice.queryVideoAll();
+    }
+
 }

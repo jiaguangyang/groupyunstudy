@@ -29,4 +29,8 @@ public interface ThisClient {
     @RequestMapping("freeCurr")
     @ResponseBody
     List<Video> freeCurr();
+
+    @RequestMapping("queryVideoAll")
+    @ResponseBody
+    void queryVideoAll();
 }

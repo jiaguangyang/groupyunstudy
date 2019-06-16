@@ -11,10 +11,7 @@ import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class jgyServiceImpl implements jgyService {
@@ -45,7 +42,7 @@ public class jgyServiceImpl implements jgyService {
     @Override
     public List<Video> careCurr() {
       List<Video> list = new ArrayList<>();
-        Jedis jedis = jedisPool.getResource();Integer a =86400000;
+        Jedis jedis = jedisPool.getResource();
         if (StringUtils.isNotEmpty(jedis.get("careCurr"))){
             String careCurr = jedis.get("careCurr");
             list = JSONArray.parseArray(careCurr, Video.class);
@@ -110,4 +107,18 @@ public class jgyServiceImpl implements jgyService {
         }
         return list2;
     }
+
+    @Override
+    public void queryVideoAll() {
+      List<Video> list= jgymapper.queryVideoAll();
+        Jedis jedis = jedisPool.getResource();
+        HashMap<String, String> map = new HashMap<>();
+        for (Video video:list){
+              String jsonString = JSON.toJSONString(video);
+              map.put("video"+video.getId(),jsonString);
+          }
+        jedis.hmset("videolist",map);
+        jedis.close();
+    }
+
 }

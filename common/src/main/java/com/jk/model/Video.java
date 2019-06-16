@@ -20,4 +20,6 @@ public class Video  {
     private  Integer videoStatus;
     private  Integer quantity;
     private  String videoinfo;
+    private  String forPeople;
+    private String summary;
 }
