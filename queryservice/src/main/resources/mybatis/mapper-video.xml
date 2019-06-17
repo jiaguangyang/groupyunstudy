@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jk.mapper.EsMapper">
+    <select id="findVideo" resultType="com.jk.model.Video">
+        select id,videoName,teacherId,videoTitle,videoImg,videoPrice,videoTime,quantity,videoinfo,videoStatus,forPeople,summary from t_video
+    </select>
+</mapper>

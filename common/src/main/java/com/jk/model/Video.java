@@ -2,16 +2,28 @@ package com.jk.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
+import java.lang.annotation.Documented;
 import java.util.Date;
 
 @Data
-public class Video  {
+@Document(indexName = "wangyistudy",type = "video",shards = 1,replicas = 0)
+public class Video {
+    @Id
     private  Integer id;
+    @Field(type = FieldType.Keyword)
     private  String videoImg;
+    @Field(analyzer = "ik_max_word",type = FieldType.Text)
     private  String videoName;
+
     private  Integer teacherId;
+    @Field(analyzer = "ik_max_word",type = FieldType.Text)
     private  String videoTitle;
     private  Double videoPrice;
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
@@ -19,7 +31,6 @@ public class Video  {
     private Date videoTime;
     private  Integer videoStatus;
     private  Integer quantity;
+    @Field(type = FieldType.Keyword)
     private  String videoinfo;
-    private  String forPeople;
-    private String summary;
 }
