@@ -4,6 +4,7 @@ import com.jk.model.Video;
 import com.jk.rmi.ThisClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,6 +17,12 @@ import java.util.List;
 public class jgyContro {
     @Autowired
     private ThisClient thisClient;
+
+    @RequestMapping("SearchCurr")
+    public String SearchCurr(Model model,String keyWord){
+        model.addAttribute("keyWord",keyWord);
+        return "SearchCurr";
+    }
 
     @RequestMapping("queryVideoAll")
     @ResponseBody

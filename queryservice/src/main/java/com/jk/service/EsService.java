@@ -8,5 +8,5 @@ import java.util.List;
 public interface EsService  {
     List<IndexQuery> findVideo();
 
-    HashMap<String, Object> findAll(Integer page, Integer rows);
+
 }

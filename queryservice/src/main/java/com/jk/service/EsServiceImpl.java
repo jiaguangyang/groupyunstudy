@@ -31,15 +31,5 @@ public class EsServiceImpl implements EsService{
         }
         return queryList;
     }
-    @Override
-    public HashMap<String, Object> findAll(Integer page, Integer rows) {
-        HashMap<String, Object> map = new HashMap<>();
-        Integer total = esMapper.findCountVideo();
-        Integer start = (page-1)*rows;
-        List<Video> list = esMapper.findAll(start,rows);
-        map.put("total",total);
-        map.put("rows",list);
-        return map;
-    }
 
 }

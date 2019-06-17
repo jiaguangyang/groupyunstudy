@@ -20,9 +20,5 @@ public class EsController {
         return esService.searchByKeywordsAndHighlightField(keywords,start,pageSize);
     }
 
-    @RequestMapping("findAll")
-    @ResponseBody
-    public HashMap<String,Object> findAll(Integer page,Integer rows){
-        return esService.findAll(page,rows);
-    }
+
 }

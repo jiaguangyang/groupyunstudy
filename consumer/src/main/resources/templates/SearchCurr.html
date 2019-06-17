@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>网易云</title>
+</head>
+<script src="../js/jquery.min.js"></script>
+<link rel="stylesheet" href="/js/layui/css/layui.css">
+<script src="/js/layui/layui.js"></script>
+<style>
+    * {
+        box-sizing:border-box;
+    }
+    body {
+        margin:0;
+        padding:0;
+        font-weight:500;
+        font-family:"Microsoft YaHei","宋体","Segoe UI","Lucida Grande",Helvetica,Arial,sans-serif,FreeSans,Arimo;
+    }
+    /*#container {
+    width:500px;
+    height:820px;
+    margin:0 auto;
+    }*/
+    div.search {
+        padding:10px 0;
+    }
+    form {
+        position:relative;
+        width:300px;
+        margin:0 auto;
+    }
+    input,button {
+        border:none;
+        outline:none;
+    }
+    input {
+        width:100%;
+        height:42px;
+        padding-left:13px;
+    }
+    button {
+        height:42px;
+        width:42px;
+        cursor:pointer;
+        position:absolute;
+    }
+    .bar7 form {
+        height:42px;
+    }
+    .bar7 input {
+        width:250px;
+        border-radius:42px;
+        border:2px solid #324B4E;
+        background:#F9F0DA;
+        transition:.3s linear;
+        float:right;
+    }
+    .bar7 input:focus {
+        width:300px;
+    }
+    .bar7 button {
+        background:none;
+        top:-2px;
+        right:20px;
+    }
+    .bar7 button:before {
+        content:"Search";
+        font-family:FontAwesome;
+        color:#324b4e;
+    }
+</style>
+<body>
+<input type="hidden" th:value="${keyWord}" id="keyWordId">
+<div style="margin-left:40px;margin-top:20px;float:left"><img src="/img/logo.png" height="74" width="212"/></div>
+<div id="container">
+    <div class="search bar7">
+        <form>
+            <input type="text" placeholder="搜索课程"  id="currinputid">
+            <button type="button" onclick="btclick()"></button>
+        </form>
+    </div>
+</div>
+<div style="float:right;margin-top:20px;">
+    <pre><a href="/page/toteacherLogin" target="blank">管 理 后 台</a>   <a href="www.baidu.com" target="blank">我 的 学 习</a> <span id="status"></span>   <!-- <span th:text="${session.username}"></span>  --></pre></div>
+<div style="float:right;margin-top:20px;"> <a href="www.baidu.com"> <img src="/img/car.png"></a> </pre></div>
+<div style="clear:both"></div>
+<div style="margin-left: 20px"><h1>搜索结果</h1><br>
+    共有<span id="countspanid">0</span>门包含“<span id="keywordspanid"></span>”的课程
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="javascript:fanye(1)" data-page="2">上一页</a>
+    &nbsp<input id="yeshu" style="width: 40px;height: 30px;text-align: center" value="1">
+    <a href="javascript:fanye(2)" data-page="2">下一页</a>
+</div>
+<br><br>
+<span id="newid"></span>
+<!--<div style="background-color: #9F9F9F;margin-left:20px;margin-top:20px">
+    <div style="float: left;margin-left: 10px"><img src="//edu-image.nosdn.127.net/75573400BE81AA338D8F60E12755DCE6.png?imageView&quality=100&thumbnail=225y125&type=webp" width="420px" height="200px"></div>
+    <div style="float: left;margin-left: 30px">
+        <h1> PS教程超级合辑</h1><br>
+        <h4>云课堂行家精品课，PS入门必备</h4>
+        <h1 style="color: red">401</h1><h2>人已购买</h2>
+    </div>
+</div>-->
+</body>
+<script>
+    layui.use('layer', function(){
+
+    });
+    var layer = layui.layer;
+    function btclick(){
+        var keyWord=$("#currinputid").val();
+        searchByKeywordsAndHighlightField(keyWord,1);
+    }
+
+    $(function () {
+        var keyWord= $("#keyWordId").val();
+        searchByKeywordsAndHighlightField(keyWord,1);
+    });
+    var bb='';
+    var pageSize=null;
+    function searchByKeywordsAndHighlightField(keyWord,page) {
+        pageSize=10;
+        var start=(page-1)*pageSize;
+         $.ajax({
+             url:"/searchByKeywordsAndHighlightField",
+             type:"post",
+             data:{start:start,pageSize:pageSize,keywords:keyWord},
+             success:function (data) {
+                 $("#keywordspanid").html(keyWord);
+                 $("#countspanid").html(data.total);
+                 var arr=data.rows;
+                 bb=data.total;
+                 var str='';
+                 for (var i=0;i<arr.length;i++){
+                     if (i!=0&&i%5==0){
+                         str+='<div style="clear:both"></div><br><br>';
+                     }
+                     if (i%5==0){
+                         str+='<div style="float:left;margin-left:50px;"><a href=javaScript:videoinfomation("'+arr[i].id+'")><img  width="225" height="125" src="'+arr[i].videoimg+'"><br><b>'+arr[i].videotitle+'</b><br>'+arr[i].videoinfo+'</a></div>';
+                     }else{
+                         str+='<div style="float:left;margin-left:30px;"><a href=javaScript:videoinfomation("'+arr[i].id+'")><img  width="225" height="125" src="'+arr[i].videoimg+'"><br><b>'+arr[i].videotitle+'</b><br>'+arr[i].videoinfo+'</a></div>'
+                     }
+
+                 }
+                 $("#newid").html(str);
+             },error:function () {
+                 
+             }
+         });
+    }
+    function videoinfomation(id){
+        alert(id);
+        // location.href="/jgy/find?url=video"+id;
+    }
+    /*分页*/
+    function fanye(type){
+        var a=parseInt($("#yeshu").val());
+        var b=Math.ceil(parseInt(bb)/pageSize);
+        if(type==1) {
+            if (a == 1) {
+                layer.msg("已经是首页");
+            } else {
+                $("#yeshu").val(a-1);
+               var keyword= $("#keywordspanid").html();
+                searchByKeywordsAndHighlightField(keyword,$("#yeshu").val());
+            }
+        }
+        if (type == 2) {
+            if (a == b) {
+                layer.msg("已经是尾页");
+            } else {
+                $("#yeshu").val(a+1);
+                var keyword= $("#keywordspanid").html();
+                searchByKeywordsAndHighlightField(keyword,$("#yeshu").val());
+            }
+        }
+    }
+
+</script>
+</html>

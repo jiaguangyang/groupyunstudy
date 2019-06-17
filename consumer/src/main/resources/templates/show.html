@@ -1,15 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>网易云</title>
 </head>
-
-<body>
-<div style="margin-left:40px;margin-top:20px;float:left"><img src="/img/logo.png" height="74" width="212"/></div>
 <script src="../js/jquery.min.js"></script>
 <link rel="stylesheet" href="/js/layui/css/layui.css">
 <script src="/js/layui/layui.js"></script>
+<style>
+* {
+box-sizing:border-box;
+}
+body {
+margin:0;
+padding:0;
+font-weight:500;
+font-family:"Microsoft YaHei","宋体","Segoe UI","Lucida Grande",Helvetica,Arial,sans-serif,FreeSans,Arimo;
+}
+/*#container {
+width:500px;
+height:820px;
+margin:0 auto;
+}*/
+div.search {
+padding:10px 0;
+}
+form {
+position:relative;
+width:300px;
+margin:0 auto;
+}
+input,button {
+border:none;
+outline:none;
+}
+input {
+width:100%;
+height:42px;
+padding-left:13px;
+}
+button {
+height:42px;
+width:42px;
+cursor:pointer;
+position:absolute;
+}
+.bar7 form {
+    height:42px;
+}
+.bar7 input {
+    width:250px;
+    border-radius:42px;
+    border:2px solid #324B4E;
+    background:#F9F0DA;
+    transition:.3s linear;
+    float:right;
+}
+.bar7 input:focus {
+    width:300px;
+}
+.bar7 button {
+    background:none;
+    top:-2px;
+    right:20px;
+}
+.bar7 button:before {
+    content:"Search";
+    font-family:FontAwesome;
+    color:#324b4e;
+}
+</style>
+<script>
+
+</script>
+<body>
+<div style="margin-left:40px;margin-top:20px;float:left"><img src="/img/logo.png" height="74" width="212"/></div>
+<div id="container">
+    <div class="search bar7">
+        <form>
+            <input type="text" placeholder="搜索课程" id="currinputid">
+            <button type="button" onclick="btclick()"></button>
+        </form>
+    </div>
+</div>
 <div style="float:right;margin-top:20px;">
     <pre><a href="/page/toteacherLogin" target="blank">管 理 后 台</a>   <a href="www.baidu.com" target="blank">我 的 学 习</a> <span id="status"></span>   <!-- <span th:text="${session.username}"></span>  --></pre></div>
 <div style="float:right;margin-top:20px;"> <a href="www.baidu.com"> <img src="/img/car.png"></a> </pre></div>
@@ -50,6 +123,10 @@
 <div style="clear:both"></div><br><br>
 </body>
 <script>
+    function btclick() {
+        var keyWord=$("#currinputid").val();
+        location.href="/jgy/SearchCurr?keyWord="+keyWord;
+    }
     //注意：导航 依赖 element 模块，否则无法进行功能性操作
     layui.use('element', function(){
         var element = layui.element;
