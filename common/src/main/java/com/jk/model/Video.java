@@ -21,7 +21,7 @@ public class Video implements Serializable{
     private  String videoImg;
     @Field(analyzer = "ik_max_word",type = FieldType.Text)
     private  String videoName;
-
+    private String videourl;
     private  Integer teacherId;
     @Field(analyzer = "ik_max_word",type = FieldType.Text)
     private  String videoTitle;

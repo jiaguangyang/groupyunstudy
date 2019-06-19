@@ -1,5 +1,6 @@
 package com.jk.controller;
 
+import com.jk.model.Comment;
 import com.jk.model.Video;
 import com.jk.service.jgyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,10 @@ public class jgyContro {
         jgyservice.queryVideoAll();
     }
 
-
+    @RequestMapping("queryComments")
+    @ResponseBody
+    public List<Comment> queryComments(Integer videoid,Integer page,Integer rows){
+        return  jgyservice.queryComments(videoid,page,rows);
+    }
 
 }

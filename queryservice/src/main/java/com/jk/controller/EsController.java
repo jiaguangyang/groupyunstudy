@@ -1,5 +1,6 @@
 package com.jk.controller;
 
+import com.jk.model.Comment;
 import com.jk.model.Video;
 import com.jk.service.EsService;
 import com.jk.service.EsServiceImpl;
@@ -19,6 +20,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -131,9 +133,9 @@ public class EsController {
             stringObjectMap.put("forPeople",vi.getForPeople());
             stringObjectMap.put("summary",vi.getSummary());
             stringObjectMap.put("score",4.5);
-
             String Ftlsite = "";
             if(vi.getVideoPrice()==null){
+                stringObjectMap.put("videourl",vi.getVideourl());
                 Ftlsite="freeVideo";
             }else{
                 Ftlsite = "videoShow";
@@ -147,5 +149,10 @@ public class EsController {
         }
     }
 
+    @RequestMapping("addComment")
+    @ResponseBody
+    public void addComment(@RequestBody Comment comment){
+        esService.addComment(comment);
+    }
 
 }

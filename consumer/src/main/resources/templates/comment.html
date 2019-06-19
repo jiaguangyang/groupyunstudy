@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>评论</title>
+    <script src="/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="/js/layui/css/layui.css">
+    <script src="/js/layui/layui.js"></script>
+</head>
+<body>
+<form class="layui-form" action="/addComment">
+    <div class="layui-form-item">
+        <label class="layui-form-label">评论星</label>
+        <div class="layui-input-inline">
+            <div id="test3"></div>
+        </div>
+        <div class="layui-input-inline">
+            <input type="hidden" name="commentGrade" id="yin" width="30%" autocomplete="off" class="layui-input"  />
+        </div>
+    </div>
+
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">评论内容</label>
+        <div class="layui-input-block">
+            <textarea name="commentContent" placeholder="请输入内容" id="commentContent"  style="width: 100px;height: 100px" class="layui-textarea"></textarea>
+        </div>
+
+    </div>
+
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">保存</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+</body>
+<script>
+    layui.use('layedit', function(){
+        var layedit = layui.layedit;
+        layedit.build('commentContent'); //建立编辑器
+    });
+    layui.use(['rate'], function(){
+        var rate = layui.rate;
+        //半星效果
+        rate.render({
+            elem: '#test3'
+            ,value: 0 //初始值
+            ,half: true //开启半星
+            ,length: 5   //星星个数
+            ,choose: function(value){
+                 $("#yin").val(value);
+            }
+        })
+
+    })
+
+</script>
+</html>

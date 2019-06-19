@@ -1,5 +1,6 @@
 package com.jk.controller;
 
+import com.jk.model.Comment;
 import com.jk.model.Video;
 import com.jk.rmi.ThisClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,19 @@ import java.util.List;
 public class jgyContro {
     @Autowired
     private ThisClient thisClient;
+
+    @RequestMapping("queryComments")
+    @ResponseBody
+    public List<Comment> queryComments(Integer videoid,Integer page,Integer rows){
+       return  thisClient.queryComments(videoid,page,rows);
+    }
+
+    @RequestMapping("toPlayerVideo")
+    public String toPlayerVideo(String url,Integer id,Model model){
+            model.addAttribute("url",url);
+            model.addAttribute("id",id);
+         return "CkPlayerTest";
+    }
 
     @RequestMapping("SearchCurr")
     public String SearchCurr(Model model,String keyWord){

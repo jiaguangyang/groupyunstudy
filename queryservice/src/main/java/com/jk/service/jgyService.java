@@ -1,5 +1,6 @@
 package com.jk.service;
 
+import com.jk.model.Comment;
 import com.jk.model.Video;
 
 import java.util.HashMap;
@@ -19,4 +20,5 @@ public interface jgyService {
 
     void queryVideoAll();
 
+    List<Comment> queryComments(Integer videoid,Integer page,Integer rows);
 }

@@ -3,10 +3,15 @@ package com.jk.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.jk.mapper.jgyMapper;
+import com.jk.model.Comment;
 import com.jk.model.Ossbean;
 import com.jk.model.Video;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -20,6 +25,9 @@ public class jgyServiceImpl implements jgyService {
 
     @Autowired
     private JedisPool jedisPool;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
 
     @Override
@@ -121,7 +129,13 @@ public class jgyServiceImpl implements jgyService {
         jedis.close();
     }
 
-
+    @Override
+    public List<Comment> queryComments(Integer videoid,Integer page,Integer rows) {
+        Criteria criteria = new Criteria();
+        criteria.and("videoid").is(videoid);
+        List<Comment> list = mongoTemplate.find(new Query(criteria).with(new Sort(Sort.Direction.DESC, "commentDate")).skip((page - 1) * rows).limit(rows), Comment.class, "Comment");
+        return list;
+    }
 
 
 }

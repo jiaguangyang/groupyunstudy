@@ -6,7 +6,7 @@ import java.io.IOException;
 public class ZfbConfig {
     //↓↓↓↓↓↓↓↓↓↓请在这里配置您的基本信息↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
     //    netapp映射的地址，，，根据自己的需要修改
-    private static String neturl = "http://igze9n.natappfree.cc";
+    private static String neturl = "http://jkjy.natapp1.cc";
     // 应用ID,您的APPID，收款账号既是您的APPID对应支付宝账号 按照我文章图上的信息填写
     public static String app_id = "2016092800618151";
 
@@ -16,10 +16,10 @@ public class ZfbConfig {
     // 支付宝公钥,对应APPID下的支付宝公钥。 按照我文章图上的信息填写支付宝公钥，别填成商户公钥
     public static String alipay_public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw7s67cOfhq+WIrz7MqdJMEt8yyBvqpYBHhIdkOcU6LFEVTOILZW2snHy4EhxZRU4Q3Z6mAdUX9H/Nmv0afCY3ile1A0781DF7+JgC1cAlZr7YiboeENyEdxZgZaTOC5c4h+Lzcvn0Vj9dAfUN9x/EnCHS6Udju2dutszTB8QcWKcQS9/wl4Z2q/1CEquzN4tbAMTBFczlatwYjf9b2RphsF8KR52YMujTaUiy7ZzuBW8SBIg1XMo+GmJmFJ9W/XleA67zo5VQriyZM4mJ1E4jAtxT00FbN+JMvZCimSDsjOGiGLtviK5xY9RcJBoNrUvlrGKGhv8ZKR6UqlR4+mwoQIDAQAB";
     // 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，其实就是你的一个支付完成后返回的页面URL
-    public static String notify_url = "http://igze9n.natappfree.cc/notifyurl";
+    public static String notify_url = "http://jkjy.natapp1.cc/notifyurl";
 
     // 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，其实就是你的一个支付完成后返回的页面URL
-    public static String return_url = "http://igze9n.natappfree.cc/returnurl";
+    public static String return_url = "http://jkjy.natapp1.cc/returnurl";
 
     // 签名方式
     public static String sign_type = "RSA2";

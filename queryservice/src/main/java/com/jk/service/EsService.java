@@ -1,5 +1,6 @@
 package com.jk.service;
 
+import com.jk.model.Comment;
 import com.jk.model.Video;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 
@@ -11,4 +12,6 @@ public interface EsService  {
 
 
     Video findVideoById(Integer videoid);
+
+    void addComment(Comment comment);
 }

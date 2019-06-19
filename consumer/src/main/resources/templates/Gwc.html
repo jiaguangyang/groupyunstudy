@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.springframework.org/schema/jdbc">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/js/jquery.min.js"></script>
+    <!-- 引入bootstrap的css -->
+    <link  href="/js/bootstrap/css/bootstrap.min.css" rel="stylesheet" >
+    <!-- 引入bootstrap-treeview的css -->
+    <link  href="/js/treeview/bootstrap-treeview.min.css" rel="stylesheet" >
+    <!-- 引入bootstrap-addTabs的css -->
+    <link  href="/js/addTabs/addTabs.css" rel="stylesheet" >
+    <!-- 引入bootstrap-table的css -->
+    <link  href="/js/table/bootstrap-table.min.css" rel="stylesheet" >
+    <!-- 引入fileinput的css -->
+    <link type="text/css" rel="stylesheet" href="/js/fileinput/css/fileinput.min.css" />
+
+
+    <!-- 引入jquery -->
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <!-- 引入bootstrap的js-->
+    <script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js"></script>
+    <!-- 引入bootstrap的js-->
+    <script type="text/javascript" src="/js/treeview/bootstrap-treeview.min.js"></script>
+    <!-- 引入bootstrap的js-->
+    <script type="text/javascript" src="/js/addTabs/addTabs.js"></script>
+    <!-- 引入bootstrap-table的js-->
+    <script type="text/javascript" src="/js/table/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src="/js/table/locale/bootstrap-table-zh-CN.min.js"></script>
+    <!-- 引入bootbox.js -->
+    <script type="text/javascript" src="/js/bootbox/bootbox.js"></script>
+    <!-- 引入fileinput的js -->
+    <script type="text/javascript" src="/js/fileinput/js/fileinput.min.js"></script>
+    <!--  引入fileinput的js -->
+    <script type="text/javascript" src="/js/fileinput/js/locales/zh.js"></script>
+
+
+    <script type="text/javascript" src="/js/fileinput/themes/fa/theme.js"></script>
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+
+
+<div >
+    <span ><font size="5" color="red">我的购物车</font>&nbsp;&nbsp;&nbsp;&nbsp;<span id="count"> </span></span>
+</div>
+
+
+<div style="margin-top: 50px">
+<button type="button" class="btn btn-secondary" onclick="fuxuan()">全选</button>
+<button type="button" class="btn btn-secondary" onclick="buxuan()">全不选</button>
+<button type="button" class="btn btn-secondary" onclick="delgwc()">移除购物车</button>
+</div>
+
+
+<div >
+    <table class="layui-hide" id="bootTab" lay-filter="test" ></table>
+</div>
+
+<div >
+    <span id="jiesuan"  style="float: right"></span>
+</div>
+
+</body>
+<script type="text/javascript" th:inline="none">
+
+
+    $(function (){
+        $("#bootTab").bootstrapTable({
+            url:"/findgwc",
+            method:"post",
+            striped: true,  	// 斑马线效果     默认false
+            //只允许选中一行
+            //singleSelect:true,
+            //选中行是不选中复选框或者单选按钮
+            clickToSelect:true,
+            showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            uniqueId: "newsId",                 //每一行的唯一标识，一般为主键列
+            showColumns: true,                  //是否显示所有的列
+            showRefresh: true,                  //是否显示刷新按钮
+            minimumCountColumns: 2,     //  最少留两列
+            detailView: false,                  //是否显示父子表
+            //发送到服务器的数据编码类型
+            contentType:'application/x-www-form-urlencoded;charset=UTF-8',   //数据编码纯文本  offset=0&limit=5
+            toolbar:'#tabToolBar',   //  工具定义位置
+            columns:[
+                {
+                    field: 'xx', title: '', width: $(this).width() * 0.2, formatter: function (value, row, index) {
+
+                        return '<input type="checkbox" value=' + row.id + ' name="fuxuan" onclick="jieshuan()">'
+
+                    },
+                },
+                {field:'id',title:'视频ID',width:$(this).width() * 0.2},
+                {field:'videoName',title:'视频名称',width:$(this).width() * 0.2},
+                {field:'videoPrice',title:'视频价格',width:$(this).width() * 0.2},
+                            ],
+            //传递参数（*）
+            queryParams: function(params) {
+                var whereParams = {
+                    /*
+                        分页  自定义的参数         默认传 limit（展示几条）    offset（从第几条开始    起始条数）
+                    */
+                    "page":params.offset,
+                    "rows":params.limit ,
+                    //"sname":params.search,
+                    //"mingdate":$("#mingTime").val(),
+                    //"maxdate":$("#maxTime").val(),
+                }
+                return whereParams;
+            },
+            //前台--排序字段
+            //sortName:'proPrice',
+            //sortOrder:'desc',
+            //前台--搜索框
+            //search:true,
+            //启动回车键做搜索功能
+            //searchOnEnterKey:true,
+            //分页方式   后台请求的分页方式
+           // sidePagination:'server',
+           // pagination: true,                   //是否显示分页（*）
+           // pageNum: 2,                       //每页的记录行数（*）
+           // pageSize: 2,                       //每页的记录行数（*）
+           // pageList: [2,3,6,9,12],        //可供选择的每页的行数（*）
+        });
+    })
+    function delgwc(){
+        var  a ="";
+        var arr = document.getElementsByName("fuxuan")
+        for (var i=0;i<arr.length;i++){
+           if (arr[i].checked==true){
+                a+=","+arr[i].value;
+
+            }
+
+        }
+             var ids =  a.substr(1);
+
+       $.ajax({
+            url:"/delgwc",
+            type:"post",
+            data:{ids:ids},
+            async:false,
+            success:function () {
+               // $("#bootTab").bootstrapTable('refresh');
+
+                location.reload();
+                jieshuan();
+            },error:function () {
+            }
+        })
+
+    }
+
+function  fuxuan() {
+  var arr = document.getElementsByName("fuxuan")
+    for (var i=0;i<arr.length;i++){
+        arr[i].checked=true;
+    }
+    jieshuan();
+}
+
+function  buxuan() {
+        var arr = document.getElementsByName("fuxuan")
+        for (var i=0;i<arr.length;i++){
+            arr[i].checked=false;
+        }
+    jieshuan();
+}
+
+function jieshuan() {
+    var  a ="";
+    var arr = document.getElementsByName("fuxuan")
+    for (var i=0;i<arr.length;i++){
+        if (arr[i].checked==true){
+            a+=","+arr[i].value;
+
+        }
+
+    }
+    var ids =  a.substr(1);
+      var  c = document.getElementById("jiesuan")
+    $.ajax({
+        url:"/jieshuan",
+        type:"post",
+        data:{ids:ids},
+        success:function (data) {
+
+           c.innerHTML='<font size="5">合计:￥</font><font color="red" size="5">'+data+'</font>' +
+               '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+               '<button type="button" class="btn btn-secondary" onclick="zifu()">结算</button>'
+        },error:function () {
+        }
+    })
+
+
+}
+$(function () {
+    count();
+})
+$(function () {
+
+    var ids="";
+    var  c = document.getElementById("jiesuan")
+    $.ajax({
+        url:"/jieshuan",
+        type:"post",
+        data:{ids:ids},
+        success:function (data) {
+
+            c.innerHTML='<font size="5">合计:￥</font><span id="jieshuan"><font color="red" size="5">'+data+'</font></span>' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+                '<button type="button" class="btn btn-secondary" onclick="zifu()">结算</button>'
+        },error:function () {
+
+        }
+    })
+})
+
+
+
+    function count() {
+
+        var  c = document.getElementById("count")
+        $.ajax({
+            url:"/count",
+            type:"post",
+            success:function (data) {
+
+                c.innerHTML='共:'+data+'门课程'
+
+            },error:function () {
+
+            }
+        })
+    }
+
+     function  zifu() {
+
+             var  a ="";
+             var arr = document.getElementsByName("fuxuan")
+             for (var i=0;i<arr.length;i++){
+                 if (arr[i].checked==true){
+                     a+=","+arr[i].value;
+
+                 }
+
+             }
+             var ids =  a.substr(1);
+
+             $.ajax({
+                 url:"/jieshuan",
+                 type:"post",
+                 data:{ids:ids},
+                 success:function (data) {
+                  location.href="/pay?money="+data;
+                 },error:function () {
+                 }
+             })
+
+
+           }
+
+
+
+</script>
+</html>

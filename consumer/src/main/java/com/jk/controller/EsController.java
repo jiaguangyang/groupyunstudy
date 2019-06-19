@@ -1,5 +1,6 @@
 package com.jk.controller;
 
+import com.jk.model.Comment;
 import com.jk.service.EsService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,15 @@ public class EsController {
     public HashMap<String , Object> searchByKeywordsAndHighlightField(String keywords,Integer start,Integer pageSize){
         return esService.searchByKeywordsAndHighlightField(keywords,start,pageSize);
     }
+    @RequestMapping("addComment")
+    @ResponseBody
+    public void addComment(Comment comment){
+        esService.addComment(comment);
+    }
+    @RequestMapping("gwc")
+    public String  gwc(){
 
+        return "Gwc";
+    }
 
 }

@@ -1,9 +1,11 @@
 package com.jk.rmi;
 
+import com.jk.model.Comment;
 import com.jk.model.Video;
 
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.LinkedHashMap;
@@ -33,4 +35,8 @@ public interface ThisClient {
     @RequestMapping("queryVideoAll")
     @ResponseBody
     void queryVideoAll();
+
+    @RequestMapping("queryComments")
+    @ResponseBody
+    List<Comment> queryComments(@RequestParam("videoid") Integer videoid,@RequestParam("page")Integer page,@RequestParam("rows")Integer rows);
 }
