@@ -3,17 +3,22 @@ package com.jk.controller;
 import com.jk.model.Video;
 import com.jk.service.jgyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.query.IndexQuery;
+import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class jgyContro {
     @Autowired
     private jgyService jgyservice;
+
+    @Autowired
+    private ElasticsearchTemplate elasticsearchTemplate;
 
     @RequestMapping("findLunBo")
     @ResponseBody
@@ -46,5 +51,7 @@ public class jgyContro {
     public void queryVideoAll(){
         jgyservice.queryVideoAll();
     }
+
+
 
 }

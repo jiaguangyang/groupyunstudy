@@ -22,6 +22,11 @@ public class EsServiceImpl implements EsService{
         return getQuery(list);
     }
 
+    @Override
+    public Video findVideoById(Integer videoid) {
+        return esMapper.findVideoById(videoid);
+    }
+
 
     private List<IndexQuery> getQuery(List<Video> list) {
         List<IndexQuery> queryList = new ArrayList<>();

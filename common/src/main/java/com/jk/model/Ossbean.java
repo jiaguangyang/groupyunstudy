@@ -2,8 +2,10 @@ package com.jk.model;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class Ossbean {
+public class Ossbean implements Serializable {
 private Integer id;
 private String url;
 private String href;

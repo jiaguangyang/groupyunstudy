@@ -1,5 +1,6 @@
 package com.jk.service;
 
+import com.jk.model.Video;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 
 import java.util.HashMap;
@@ -9,4 +10,5 @@ public interface EsService  {
     List<IndexQuery> findVideo();
 
 
+    Video findVideoById(Integer videoid);
 }

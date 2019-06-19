@@ -14,7 +14,7 @@ import java.util.Date;
 
 @Data
 @Document(indexName = "wangyistudy",type = "video",shards = 1,replicas = 0)
-public class Video {
+public class Video implements Serializable{
     @Id
     private  Integer id;
     @Field(type = FieldType.Keyword)
@@ -33,4 +33,8 @@ public class Video {
     private  Integer quantity;
     @Field(type = FieldType.Keyword)
     private  String videoinfo;
+    private String forPeople;
+    private String summary;
+    private String teacherName;
+    private String teacherInfo;
 }

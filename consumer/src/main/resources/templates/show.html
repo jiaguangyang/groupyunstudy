@@ -74,7 +74,7 @@ position:absolute;
 
 </script>
 <body>
-<div style="margin-left:40px;margin-top:20px;float:left"><img src="/img/logo.png" height="74" width="212"/></div>
+<div style="margin-left:40px;margin-top:20px;float:left"><a href="http://localhost:85/jgy/find?url=show"><img src="/img/logo.png" height="74" width="212"/></a></div>
 <div id="container">
     <div class="search bar7">
         <form>
@@ -150,7 +150,7 @@ position:absolute;
             url:'/jgy/findLunBo',
             type:'post',
             success:function(imgData){
-                var imgData=    JSON.parse(imgData);
+                var imgData=JSON.parse(imgData);
                 var ljy="";
                 for(var g=0;g<imgData.length;g++){
 
@@ -184,9 +184,9 @@ position:absolute;
                 var str='';
                 for (var i=0;i<data.length;i++){
                     if (i==0){
-                        str+='<div style="float:left;margin-left:50px;"><a href=javaScript:videoinfomation("'+data[i].id+'")><img  width="225" height="125" src="'+data[i].videoImg+'"><br><b>'+data[i].videoTitle+'</b><br>'+data[i].videoinfo+'</a></div>';
+                        str+='<div style="float:left;margin-left:50px;"><a target="_blank" href="http://127.0.0.1:85/videostatic/video'+data[i].id+'.html"><img  width="225" height="125" src="'+data[i].videoImg+'"><br><b>'+data[i].videoTitle+'</b><br>'+data[i].videoinfo+'</a></div>';
                     }else{
-                        str+='<div style="float:left;margin-left:30px;"><a href=javaScript:videoinfomation("'+data[i].id+'")><img  width="225" height="125" src="'+data[i].videoImg+'"><br><b>'+data[i].videoTitle+'</b><br>'+data[i].videoinfo+'</a></div>'
+                        str+='<div style="float:left;margin-left:30px;"><a target="_blank" href="http://127.0.0.1:85/videostatic/video'+data[i].id+'.html"><img  width="225" height="125" src="'+data[i].videoImg+'"><br><b>'+data[i].videoTitle+'</b><br>'+data[i].videoinfo+'</a></div>'
                     }
                 }
                 $("#jingxuanid").html(str);
@@ -205,9 +205,9 @@ position:absolute;
                 var str='';
                 for (var i=0;i<data.length;i++){
                     if (i==0){
-                        str+='<div style="float:left;margin-left:50px;"><a href=javaScript:videoinfomation("'+data[i].id+'")><img  width="225" height="125" src="'+data[i].videoImg+'"><br><b>'+data[i].videoTitle+'</b><br>'+data[i].videoinfo+'</a></div>';
+                        str+='<div style="float:left;margin-left:50px;"><a target="_blank" href="http://127.0.0.1:85/videostatic/video'+data[i].id+'.html"><img  width="225" height="125" src="'+data[i].videoImg+'"><br><b>'+data[i].videoTitle+'</b><br>'+data[i].videoinfo+'</a></div>';
                     }else{
-                        str+='<div style="float:left;margin-left:30px;"><a href=javaScript:videoinfomation("'+data[i].id+'")><img  width="225" height="125" src="'+data[i].videoImg+'"><br><b>'+data[i].videoTitle+'</b><br>'+data[i].videoinfo+'</a></div>'
+                        str+='<div style="float:left;margin-left:30px;"><a target="_blank" href="http://127.0.0.1:85/videostatic/video'+data[i].id+'.html"><img  width="225" height="125" src="'+data[i].videoImg+'"><br><b>'+data[i].videoTitle+'</b><br>'+data[i].videoinfo+'</a></div>'
                     }
                 }
                 $("#newid").html(str);
@@ -226,9 +226,9 @@ position:absolute;
                 var str='';
                 for (var i=0;i<data.length;i++){
                     if (i==0){
-                        str+='<div style="float:left;margin-left:50px;"><a href=javaScript:videoinfomation("'+data[i].id+'")><img  width="225" height="125" src="'+data[i].videoImg+'"><br><b>'+data[i].videoTitle+'</b><br>'+data[i].videoinfo+'</a></div>';
+                        str+='<div style="float:left;margin-left:50px;"><a target="_blank" href="http://127.0.0.1:85/videostatic/video'+data[i].id+'.html"><img  width="225" height="125" src="'+data[i].videoImg+'"><br><b>'+data[i].videoTitle+'</b><br>'+data[i].videoinfo+'</a></div>';
                     }else{
-                        str+='<div style="float:left;margin-left:30px;"><a href=javaScript:videoinfomation("'+data[i].id+'")><img  width="225" height="125" src="'+data[i].videoImg+'"><br><b>'+data[i].videoTitle+'</b><br>'+data[i].videoinfo+'</a></div>'
+                        str+='<div style="float:left;margin-left:30px;"><a target="_blank" href="http://127.0.0.1:85/videostatic/video'+data[i].id+'.html"><img  width="225" height="125" src="'+data[i].videoImg+'"><br><b>'+data[i].videoTitle+'</b><br>'+data[i].videoinfo+'</a></div>'
                     }
                 }
                 $("#freeid").html(str);
@@ -240,10 +240,10 @@ position:absolute;
 
 
     <!-- 查询免费好课结束 -->
-    function videoinfomation(id){
+   /* function videoinfomation(id){
         alert(id);
-       // location.href="/jgy/find?url=video"+id;
-    }
+       location.href="/jgy/find?url=video"+id;
+    }*/
     $(function () {
             careCurr();
            queryLoginName();

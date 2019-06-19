@@ -5,6 +5,7 @@ import com.jk.model.Video;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -21,4 +22,5 @@ public interface jgyMapper {
 
     @Select("select * from t_video")
     List<Video> queryVideoAll();
+
 }

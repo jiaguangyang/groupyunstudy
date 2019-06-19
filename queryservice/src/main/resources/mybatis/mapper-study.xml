@@ -20,4 +20,6 @@ t_video tv INNER JOIN t_teacher tt
         select tv.id,tv.videoName,tv.videoImg,tv.videoTitle,tv.videoinfo from t_video tv where  tv.videoStatus=3
 
     </select>
+
+
 </mapper>

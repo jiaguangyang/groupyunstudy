@@ -4,7 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 @Data
-public class TeacherBean  {
+public class TeacherBean implements Serializable{
     private Integer id;
     private String teacherAccount;
     private String teacherPwd;

@@ -3,6 +3,7 @@ package com.jk.controller;
 import com.jk.model.Video;
 import com.jk.service.EsService;
 import com.jk.service.EsServiceImpl;
+import com.jk.util.GenerateFreemarker;
 import org.apache.ibatis.annotations.Param;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -16,6 +17,7 @@ import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
+import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -111,7 +113,39 @@ public class EsController {
         }
     }
 
+    @RequestMapping("createHtml")
+    @ResponseBody
+    public boolean saveProduct(Integer videoid) {
+        try {
+            Video vi= esService.findVideoById(videoid);
+            IndexQuery query = new IndexQueryBuilder().withId(vi.getId().toString()).withObject(vi).build();
+            elasticsearchTemplate.index(query);
+            String templatePath = "D:\\nginx-1.16.0\\templates\\templates";  //模板路径
+            String generatePath = "D:\\nginx-1.16.0\\templates\\videostatic\\video"+vi.getId()+".html"; //生成路径
+            Map<String, Object> stringObjectMap = new HashMap<>();
+            stringObjectMap.put("id",vi.getId());
+            stringObjectMap.put("videoName",vi.getVideoName());
+            stringObjectMap.put("videoImg",vi.getVideoImg());
+            stringObjectMap.put("quantity",vi.getQuantity());
+            stringObjectMap.put("teacherName",vi.getTeacherName());
+            stringObjectMap.put("forPeople",vi.getForPeople());
+            stringObjectMap.put("summary",vi.getSummary());
+            stringObjectMap.put("score",4.5);
 
+            String Ftlsite = "";
+            if(vi.getVideoPrice()==null){
+                Ftlsite="freeVideo";
+            }else{
+                Ftlsite = "videoShow";
+                stringObjectMap.put("DisCountPrice",vi.getVideoPrice()*0.9);
+                stringObjectMap.put("videoPrice",vi.getVideoPrice());
+            }
+            GenerateFreemarker.createHtml(generatePath,templatePath,stringObjectMap,Ftlsite);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
 
 }

@@ -10,6 +10,7 @@ import com.jk.util.AliyunOSSUtil;
 import com.jk.util.ConstanConf;
 import com.jk.util.Md5Util;
 import groovy.transform.ThreadInterrupt;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +35,16 @@ public class LoginController {
     private LoginService loginService;
     @Autowired
     private JedisPool jedisPool;
+
+    @RequestMapping("buyVideo")
+    public String buyVideo(Integer vid){
+        Jedis jedis = jedisPool.getResource();
+        String userId = jedis.get("userId");
+        if (StringUtils.isNotEmpty(userId)){
+            return"";
+        }
+        return "login";
+    }
 
     @RequestMapping("queryLogin")
     @ResponseBody
