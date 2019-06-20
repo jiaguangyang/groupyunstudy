@@ -16,5 +16,8 @@ public class TeacherBean implements Serializable{
 
     private String companyLogo;
     private String zy;
+    private Integer chec;
+    private Integer type;
+
 
 }

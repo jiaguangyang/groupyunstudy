@@ -19,8 +19,6 @@ public class RedisConfig {
     @Value("${spring.redis.host}")
     private String host;
 
-    @Value("${spring.redis.pwd}")
-    private String pwd;
     @Value("${spring.redis.port}")
     private int port;
     @Value("${spring.redis.timeout}")
@@ -30,7 +28,7 @@ public class RedisConfig {
     public JedisPool getJedisPool() {
         log.info("==>初始化jedis连接池");
         JedisPoolConfig config = new JedisPoolConfig();
-        JedisPool pool = new JedisPool(config, host, port, timeout,pwd);
+        JedisPool pool = new JedisPool(config, host, port, timeout);
         System.out.println(pool);
         return pool;
     }

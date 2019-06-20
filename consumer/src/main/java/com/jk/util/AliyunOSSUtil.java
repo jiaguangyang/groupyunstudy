@@ -4,6 +4,7 @@ import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSException;
 import com.aliyun.oss.model.*;
+import com.jk.util.AliyunOSSConfigConstant;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
@@ -65,7 +66,8 @@ public class AliyunOSSUtil {
             if (isImage) {//如果是图片，则图片的URL为：....
                 FILE_URL = "https://" + bucketName + "." + endpoint + "/" + fileUrl;
             } else {
-                FILE_URL = "非图片，不可预览。文件路径为：" + fileUrl;
+                FILE_URL = "https://" + bucketName + "." + endpoint + "/" + fileUrl;
+                // FILE_URL = "非图片，不可预览。文件路径为：" + fileUrl;
             }
 
             // 上传文件
@@ -133,6 +135,3 @@ public class AliyunOSSUtil {
     }
 
 }
-
-
-
