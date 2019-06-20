@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="/js/layui/css/layui.css">
+    <script src="/js/layui/layui.js"></script>
+
+</head>
+<body>
+<form class="layui-form" id="videoFrom">
+<div class="layui-inline">
+    <label class="layui-form-label">视频名称</label>
+    <div class="layui-input-inline">
+        <input type="tel" name="videoName" lay-verify="video"  autocomplete="off" class="layui-input">
+    </div>
+</div>
+    <div class="layui-inline">
+        <label class="layui-form-label">视频标题</label>
+        <div class="layui-input-inline">
+            <input type="tel" name="videoTitle" lay-verify="video"  autocomplete="off" class="layui-input">
+        </div>
+    </div><br>
+    <div class="layui-inline">
+        <label class="layui-form-label">视频封面</label>
+        <div class="layui-upload" >
+            <input type="file" name="videoImg" id="test1" >
+            <button type="button" class="layui-btn" id="test2" >上传封面</button>
+            <input type="hidden" name="videoImg" id="hiden1" >
+        </div>
+    </div>
+    <div class="layui-upload-list">
+        <img class="layui-upload-img" id="demo2" width="150px"/>
+    </div><br>
+    <div class="layui-inline">
+        <label class="layui-form-label">视频上传</label>
+        <div class="layui-upload" >
+            <input type="file" name="videourl" id="test8" >
+            <button type="button" class="layui-btn" id="test9" >上传视频</button>
+            <input type="hidden" name="videourl" id="hiden" >
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">视频价格</label>
+        <div class="layui-input-inline">
+            <input type="number" name="videoPrice" id="videoPrice" lay-verify="video"  autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">*课程类型</label>
+        <div class="layui-input-inline">
+            <select name="kechengfenlei" lay-filter="zhuying" id="zy">
+                <option value="0">请选择</option>
+
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">*简介</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入内容" class="layui-textarea" name="videoinfo"></textarea>
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">适用人群</label>
+        <div class="layui-input-inline">
+            <input type="tel" name="forPeople" lay-verify="video"  autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">*课程概述</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入内容" class="layui-textarea" name="summary"></textarea>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="demo1" type="button" onclick="addVideo()">提交</button>
+        </div>
+    </div>
+</form>
+</body>
+<script type="text/javascript">
+layui.use('upload', function(){
+        var $ = layui.jquery
+            ,upload = layui.upload;
+        //选完文件后不自动上传
+        upload.render({
+            elem: '#test8'
+            ,url: '/login/uploadVideo'
+            ,auto: false
+            ,accept:"file"
+            //,multiple: true
+            ,choose: function(obj){
+                console.log(obj)
+                $("#hiden").val($("#test8").val())
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo2').attr('src', result); //图片链接（base64）
+                    $('#demo2').attr('value', result); //图片链接（base64）
+                    $("#hiden").val($("#test8").val())
+                });
+            }
+            ,bindAction: '#test9'
+            ,done: function(res){
+                console.log(res)
+                $('#hiden').attr('value', res.imgId);
+                return layer.msg(res.msg,{icon: res.status,time: 2000});
+            }
+        });
+    });
+//主营项目查询
+layui.use('form',function () {
+    var form = layui.form;
+    form.render();
+    $.post(
+        "/login/queryZhuying",
+        function (obj) {
+            for (var i = 0; i < obj.length; i++) {
+                $("#zy").append("<option value=" + obj[i].zy + ">" + obj[i].zy + "</option>")
+            }
+            form.render("select");
+        },
+        "json"
+    )
+});
+    function addVideo() {
+        $.ajax({
+            url:"/login/addVideo",
+            type:'post',
+            data:$("#videoFrom").serialize(),
+            success:function (data) {
+             if (data){
+                 layui.use('layer', function(){
+                     var layer = layui.layer;
+                     layer.msg("视频上传成功请等待审核");
+                     //location.href='/page/addvideo';
+                 });
+                //$("#videoFrom").form('reset');
+             }else {
+                 layui.use('layer', function () {
+                     var layer = layui.layer;
+                     layer.msg("视频上传失败");
+                 });
+             }
+            }
+        })
+    }
+
+    function uploadViden() {
+        $.ajax({
+            url:'/login/addViden',
+            type:'post',
+            data:$("#videnFrom").serialize(),
+            success:function (data) {
+                layui.use('layer', function(){
+                    var layer = layui.layer;
+                    layer.msg(data.msg);
+                });
+            }
+        })
+    }
+
+    /*var uploadInst=upload.render({
+                         elem: '#video'
+                    ,url: '/login/addVideo'
+                     ,field:"layuiVideo"
+                     ,data:{"dir":"media"}
+                     ,accept: 'video' //视频
+                     // ,before:function (obj) {
+                     //     $('#demo9').css('display','block').attr('src', "http://p6nngxvb7.bkt.clouddn.com/FsyjSltTtkVtzepa_w7zsnS_S7zO"); //链接（base64）http://p6nngxvb7.bkt.clouddn.com/FsyjSltTtkVtzepa_w7zsnS_S7zO
+                     // }
+                     ,done: function(res){
+                           if(res.code==1){
+                                    layer.alert(res.message,5);
+                                }
+                          if(res.error>0){
+                                    return layer.msg(res.message);
+                                 }
+                          if(res.error==0){
+                               alert("res.url:"+res.url);
+                                   $("#videourl").val(res.url);
+                                   $("#demo9").attr("src",res.url);
+                                   layer.alert("上传成功",{offset:['200px','450px'],icon:6});
+                                 }
+                        }
+                     ,error:function () {
+                           //演示失败状态，并实现重传
+                          var demoText = $('#demoText');
+                         demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                          demoText.find('.demo-reload').on('click', function () {
+                                  uploadInst.upload();
+                                 });
+                   }
+            });*/
+layui.use('upload', function(){
+    var $ = layui.jquery
+        ,upload = layui.upload;
+    //选完文件后不自动上传
+    upload.render({
+        elem: '#test1'
+        ,url: '/login/imgUpload'
+        ,auto: false
+        ,accept:"file"
+        //,multiple: true
+        ,choose: function(obj){
+            console.log(obj)
+            $("#hiden1").val($("#test1").val())
+            //预读本地文件示例，不支持ie8
+            obj.preview(function(index, file, result){
+                $('#demo2').attr('src', result); //图片链接（base64）
+                $('#demo2').attr('value', result); //图片链接（base64）
+                $("#hiden1").val($("#test1").val())
+            });
+        }
+        ,bindAction: '#test2'
+        ,done: function(res){
+            console.log(res)
+            $('#hiden1').attr('value', res.imgId);
+            return layer.msg(res.msg,{icon: res.status,time: 2000});
+        }
+    });
+});
+</script>
+</html>

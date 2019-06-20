@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我的订单</title>
+    <script src="/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="/js/layui/css/layui.css">
+    <script src="/js/layui/layui.js"></script>
+</head>
+<body>
+<table class="layui-hide" id="myTable" style="height: 600px"></table>
+</body>
+<script>
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+
+        //常规用法
+        laydate.render({
+            elem: '#startPlaceDate'
+        });
+        laydate.render({
+            elem: '#endPlaceDate'
+        });
+    })
+
+
+    var form = '';//定义全局变量
+    layui.use(['form', 'laydate'], function () {
+        form = layui.form,
+            laydate = layui.layuidate;
+        form.render();//更新渲染表单
+    });
+    $(function () {
+
+        initMyTable();
+    })
+
+    //查看我的视频
+    function initMyTable() {
+        $("#teacherDiv").show();
+        $("#videoDiv").hide();
+        layui.use('table', function () {
+            var table = layui.table;
+            table.render({
+                elem: '#myTable',
+                dataType: 'json'
+                , url: '/login/queryDingdan'
+                //, toolbar: 'teacherDiv'
+                //, cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                , cols: [
+                    [
+                        {
+                            field: 'sid', width: 80, title: '<input type="checkbox"  id="qxid" >', templet: function (row) {
+                                return '<input type="checkbox" value="' + row.id+ '" class="chk">';
+                            }
+                        },
+                        , {field: 'videoorder', width: 80, title: '订单号'}
+                        , {field: 'dealtime', width: 80, title: '交易时间'}
+                        , {field: 'videoname', width: 80, title: '视频名称'}
+
+                        , {field: 'dealmoney', width: 100, title: '交易金额',sort: true} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+
+
+
+                    ]
+                ],
+                id: 'id',
+                skin: 'row', //表格风格
+                even: true, //隔行背景
+                page: true, //是否显示分页
+                limits: [2, 5, 10], //显示
+                limit: 2, //每页默认显示的数量
+                request: {
+                    page: 'page', //页码的参数名称，默认：page
+                    limit: 'limit' //每页数据量的参数名，默认：limit
+                }
+
+            });
+            var $ = layui.$, active = {
+                reload: function () {
+                    var name = $("#name").val()
+                    //执行重载
+                    table.reload('testReload', {
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                        , where: {
+                            name: name
+
+                        }
+                    });
+                }
+
+            };
+            $('#search').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+        });
+
+    }
+</script>
+</html>

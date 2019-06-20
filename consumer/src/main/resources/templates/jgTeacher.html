@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>所属教师</title>
+    <script src="/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="/js/layui/css/layui.css">
+    <script src="/js/layui/layui.js"></script>
+</head>
+<body>
+<div id="teacherDiv">
+<!--
+    <button class="layui-btn" lay-submit lay-filter="demo1" type="button" onclick="queryVoden()">查看他的信息</button>
+-->
+    <table class="layui-hide" id="myTable" style="height: 600px"></table>
+
+
+</div>
+<div id="videoDiv">
+<!--
+    <button class="layui-btn" lay-submit lay-filter="demo1" type="button" onclick="queryVoden()">查看视频</button>
+-->
+
+    <table class="layui-hide" id="videoTable" style="height: 600px"></table>
+</div>
+</body>
+<script>
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+
+        //常规用法
+        laydate.render({
+            elem: '#startPlaceDate'
+        });
+        laydate.render({
+            elem: '#endPlaceDate'
+        });
+    })
+
+
+    var form = '';//定义全局变量
+    layui.use(['form', 'laydate'], function () {
+        form = layui.form,
+            laydate = layui.layuidate;
+        form.render();//更新渲染表单
+    });
+    $(function () {
+
+        initMyTable();
+    })
+
+    //查看我的视频
+    function initMyTable() {
+        $("#teacherDiv").show();
+        $("#videoDiv").hide();
+        layui.use('table', function () {
+            var table = layui.table;
+            table.render({
+                elem: '#myTable',
+                dataType: 'json'
+                , url: '/login/queryJgTeacher'
+                //, toolbar: 'teacherDiv'
+                //, cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                , cols: [
+                    [
+                        {
+                            field: 'sid', width: 80, title: '<input type="checkbox"  id="qxid" >', templet: function (row) {
+                                return '<input type="checkbox" value="' + row.id+ '" class="chk">';
+                            }
+                        },
+                        , {field: 'teacherName', width: 80, title: '教师姓名'}
+                        , {field: 'teacherAccount', width: 80, title: '网站昵称'}
+                        , {field: 'companyLogo', width: 150, title: '教师头像', sort: true,templet: function (row) {
+                            return ' <img class="layui-upload-img" id="demo2" width="150px" src="'+row.companyLogo+'"/>';
+                        }}
+                        , {field: 'teacherPhone', width: 100, title: '联系方式',sort: true} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                        , {field: 'email', width: 80, title: '邮箱', sort: true}
+
+
+                    ]
+                ],
+                id: 'id',
+                skin: 'row', //表格风格
+                even: true, //隔行背景
+                page: true, //是否显示分页
+                limits: [2, 5, 10], //显示
+                limit: 2, //每页默认显示的数量
+                request: {
+                    page: 'page', //页码的参数名称，默认：page
+                    limit: 'limit' //每页数据量的参数名，默认：limit
+                }
+
+            });
+            var $ = layui.$, active = {
+                reload: function () {
+                    var name = $("#name").val()
+                    //执行重载
+                    table.reload('testReload', {
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                        , where: {
+                            name: name
+
+                        }
+                    });
+                }
+
+            };
+            $('#search').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+        });
+
+    }
+    /*function queryVoden() {
+        var arr = $("[class=chk]:checked");
+
+        if (arr.length != 1) {
+            layer.msg("请选择一位教师查看");
+            return
+        }else {
+            var teacherId= arr[0].value
+            $("#teacherDiv").hide();
+            $("#videoDiv").show();
+            viden(teacherId);
+        }
+    }*/
+/*    function viden(teacherId){
+        alert(1)
+    layui.use('table', function () {
+        var table = layui.table;
+        table.render({
+            elem: '#myTable',
+            dataType: 'json'
+            , url: '/login/queryJgteacher?teacherId='+teacherId
+            , toolbar: 'default'
+            //, cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            , cols: [
+                [
+                    {
+                        field: 'sid', width: 80, title: '<input type="checkbox"  id="qxid" >', templet: function (row) {
+                            return '<input type="checkbox" value="' + row.videourl+ '" class="chk">';
+                        }
+                    },
+                    {field: 'videoName', width: 80, title: '视频名称', sort: true}
+                    , {field: 'teacherName', width: 80, title: '上传人'}
+                    , {field: 'videoTime', width: 150, title: '上传日期', sort: true}
+                    , {field: 'videoStatus', width: 80, title: '审核状态' ,templet: function (row) {
+                        var html=''
+                        if (row.videoStatus=0){
+                            html='未审核'
+                        }
+                        if (row.videoStatus=1){
+                            html='审核未通过'
+                        }
+                        if (row.videoStatus=2){
+                            html='审核成功'
+                        }
+                        return html;
+                    }
+
+                }
+                    , {field: 'videoPrice', width: 100, title: '视频价格',sort: true} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                    , {field: 'videoinfo', width: 80, title: '视频简介', sort: true}
+                    , {field: 'summary', width: 80, title: '视频概述', sort: true}
+                    , {field: 'kechengfenlei', width: 80, title: '视频类型', sort: true}
+                ]
+            ],
+            id: 'id',
+            skin: 'row', //表格风格
+            even: true, //隔行背景
+            page: true, //是否显示分页
+            limits: [2, 5, 10], //显示
+            limit: 2, //每页默认显示的数量
+            request: {
+                page: 'page', //页码的参数名称，默认：page
+                limit: 'limit' //每页数据量的参数名，默认：limit
+            }
+
+        });
+        var $ = layui.$, active = {
+            reload: function () {
+                var name = $("#name").val()
+                //执行重载
+                table.reload('testReload', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    , where: {
+                        name: name
+
+                    }
+                });
+            }
+
+        };
+        $('#search').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+    }*/
+
+</script>
+</html>

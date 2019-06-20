@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="/js/layui/css/layui.css">
+    <script src="/js/layui/layui.js"></script>
+</head>
+<body>
+<h3 >个人申请入驻</h3><br>
+
+
+<form class="layui-form" id="regFrom">
+    <div class="layui-form-item">
+        <label class="layui-form-label">登录账号</label>
+        <div class="layui-input-block">
+            <input type="tel" name="account" lay-verify="required|name" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">机构名称</label>
+        <div class="layui-input-block">
+            <input type="tel" name="instName" lay-verify="required|name" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+
+        <label class="layui-form-label">验证手机</label>
+        <div class="layui-input-inline">
+            <input type="tel" name="phone"  id="phone" lay-verify="required|phone" autocomplete="off" class="layui-input">
+
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">验证码</label>
+        <div class="layui-input-inline">
+            <input type="tel" name="code" lay-verify="code" id="code" autocomplete="off" class="layui-input">
+
+        </div>
+    </div>
+    <button class="layui-btn"  type="button" onclick="sendCode()">获取验证码</button>
+    <button class="layui-btn"   type="button" onclick="phoneCode()">手机号验证</button>
+    <div class="layui-inline">
+        <label class="layui-form-label">邮箱</label>
+        <div class="layui-input-inline">
+            <input type="email" name="email" lay-verify="email" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">*公司负责人</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" lay-verify="identity" placeholder="" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">*登录密码</label>
+        <div class="layui-input-block">
+            <input type="password" name="password" lay-verify="identity" placeholder="" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">*机构详细信息</label>
+        <div class="layui-input-inline">
+            <textarea placeholder="请输入内容" class="layui-textarea" name="information"></textarea>        </div>
+        <div class="layui-form-mid layui-word-aux">精炼地介绍自己课堂的优势、特色等信息，方便用户获得直观印象，40字内 如：网易杭研院技术咖，专注直播，传播分享。</div>
+    </div>
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">*机构简介</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入内容" class="layui-textarea" name="instInfo"></textarea>
+        </div>
+    </div>
+
+    <div class="layui-upload">
+        <label class="layui-form-label">*上传营业执照</label>
+        <input type="file" name="videoImg" id="test8" >
+        <button type="button" class="layui-btn" id="test9" >开始上传</button>
+        <input type="hidden" name="videoImg" id="hiden" >
+    </div>
+    <div class="layui-upload-list">
+        <img class="layui-upload-img" id="demo2" width="150px"/>
+    </div>
+    <div class="layui-form-mid layui-word-aux">上传带有负责人签名的“承诺书签名扫描件”，若为公司申请入驻则需要加盖企业公章。</div>
+
+
+</form>
+<div class="layui-form-item">
+    <div class="layui-input-block">
+        <button class="layui-btn" lay-submit lay-filter="demo1" type="button" onclick="regtrs()">立即提交</button>
+        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+</div>
+<script>
+    function sendCode() {
+        var phone =$('#phone').val()
+        //  alert(phone);
+        $.ajax({
+            url:"/login/sendcode",
+            data:{
+                phone:phone,
+            },
+            async:true,
+            dataType:'json',
+            success:function (data) {
+                layui.use('layer', function(){
+                    var layer = layui.layer;
+                    layer.msg(data.msg);
+                });
+            }
+        })
+    }
+    //图片上传
+    layui.use('upload', function(){
+        var $ = layui.jquery
+            ,upload = layui.upload;
+
+        //选完文件后不自动上传
+        upload.render({
+            elem: '#test8'
+            ,url: '/login/imgUpload'
+            ,auto: false
+            //,multiple: true
+            ,choose: function(obj){
+                console.log(obj)
+                $("#hiden").val($("#test8").val())
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo2').attr('src', result); //图片链接（base64）
+                    $('#demo2').attr('value', result); //图片链接（base64）
+                    $("#hiden").val($("#test8").val());
+                    //$('#hiden').attr('value', res.imgId);
+                });
+            }
+            ,bindAction: '#test9'
+            ,done: function(res){
+                console.log(res)
+                $('#hiden').attr('value', res.imgId);
+                return layer.msg(res.msg,{icon: res.status,time: 2000});
+            }
+        });
+
+    });
+
+    //手机验证
+    function phoneCode() {
+        var phone =$('#phone').val()
+        var code = $('#code').val()
+        $.ajax({
+            url:"/login/phoneCode",
+            data:{
+                phone:phone,
+                code:code
+            },
+            async:true,
+            dataType:'json',
+            success:function (data) {
+                layui.use('layer', function(){
+                    var layer = layui.layer;
+                    layer.msg(data.msg);
+                });
+            }
+        })
+
+    }
+    //主营项目查询
+    layui.use('form',function () {
+        var form = layui.form;
+        form.render();
+        $.post(
+            "/login/queryZhuying",
+            function (obj) {
+                for (var i = 0; i < obj.length; i++) {
+                    $("#zy").append("<option value=" + obj[i].zy + ">" + obj[i].zy + "</option>")
+                }
+                form.render("select");
+            },
+            "json"
+        )
+    });
+    /*   function initZhuying() {
+           $.ajax({
+               url:"/login/queryZhuying",
+
+               success:function (data) {
+                   var st = '  <option value="0">请选择</option>'
+                   //var d=data[0].zy
+
+                   for (var i = 0; i < data.length; i++) {
+                       st += "<option value='" + data[i].zy + "'>" + data[i].zy + "</option>"
+
+                   }
+                   alert(st)
+                   $("#zy").append(st)
+               }
+               })
+
+               }*/
+    //注册教师信息
+    function regtrs() {
+        $.ajax({
+            url:"/login/addInformation",
+            type:"post",
+            data:$("#regFrom").serialize(),
+            success:function (data) {
+                if (data.code==0){
+                    layui.use('layer', function(){
+                        var layer = layui.layer;
+                        layer.msg(data.msg);
+                    });
+                    location.href="/page/find?url=show";
+                }else {
+                    layui.use('layer', function(){
+                        var layer = layui.layer;
+                        layer.msg(data.msg);
+                    });
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>网易云</title>
 </head>
-<script src="../js/jquery.min.js"></script>
+<script src="/js/jquery.min.js"></script>
 <link rel="stylesheet" href="/js/layui/css/layui.css">
 <script src="/js/layui/layui.js"></script>
 <style>
@@ -84,7 +84,7 @@ position:absolute;
     </div>
 </div>
 <div style="float:right;margin-top:20px;">
-    <pre><a href="/page/toteacherLogin" target="blank">管 理 后 台</a>   <a href="www.baidu.com" target="blank">我 的 学 习</a> <span id="status"></span>   <!-- <span th:text="${session.username}"></span>  --></pre></div>
+    <pre><a href="/page/toteacherLogin" target="blank">管 理 后 台</a>   <a href="www.baidu.com" target="blank">我 的 学 习</a> &nbsp; &nbsp;<span id="status"></span>   <!-- <span th:text="${session.username}"></span>  --></pre></div>
 <div style="float:right;margin-top:20px;"> <a href="www.baidu.com"> <img src="/img/car.png"></a> </pre></div>
 <div style="clear:both"></div>
 <ul class="layui-nav layui-bg-blue" lay-filter="">
@@ -252,12 +252,12 @@ position:absolute;
     });
     function queryLoginName(){
         $.ajax({
-            url:"/login/qyertUserName",
+            url:"/login/queryUserName",
             success:function (data) {
                 // var status=$("#status").val()
                 var html="";
                 if (data!=null&data!=''){
-                    html+=data
+                    html+="用户:"+"<a href='/page/center'>"+data+"</a>"
 
                 } else {
                     html+="<a href=\"/page/tologin\" target=\"blank\">登录/注册 </a>"
