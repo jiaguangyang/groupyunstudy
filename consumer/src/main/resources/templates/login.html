@@ -3,12 +3,11 @@
 <html lang="en" >
 
 <head>
-<meta charset="UTF-8">
-<title>登录</title>
-    <script src="/js/jquery.min.js"></script>
-
-    <link rel="stylesheet" href="/js/layui/css/layui.css">
-    <script src="/js/layui/layui.js"></script>
+	<meta charset="UTF-8">
+	<title>登录</title>
+	<script src="/js/jquery.min.js"></script>
+	<link rel="stylesheet" href="/js/layui/css/layui.css">
+	<script src="/js/layui/layui.js"></script>
 	<link rel="stylesheet" href="/loginstyle/all.min.css">
 	<link rel="stylesheet" href="/loginstyle/style.css">
 
@@ -22,10 +21,10 @@
 
 <body>
 
-  <h2>登录/注册</h2>
+<h2>登录/注册</h2>
 <div class="container" id="container">
 	<div class="form-container sign-up-container">
-       <form id="userFrom">
+		<form id="userFrom">
 			<h1>注册</h1>
 			<div class="social-container">
 				<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -36,10 +35,10 @@
 			<input type="text" name="name" placeholder="名称" />
 			<input type="password" name="password" placeholder="密码" />
 			<button type="button" onclick="addRegUser()">注册</button>
-	   </form>
+		</form>
 	</div>
-	<div class="form-container sign-in-container">
-	<form>
+	<div class="form-container sign-in-container" id="hiden">
+		<form>
 			<h1>登录</h1>
 			<div class="social-container">
 				<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -49,10 +48,29 @@
 			<span><a href="/page/toteacherLogin">我要开课</a></span>
 			<input type="text" name="name"  id="name" placeholder="用户名" />
 			<input type="password" name="password" id="password" placeholder="密码" />
-			<a href="#">快捷登录</a>
+			<a href="javaScript:kjlogin()">快捷登录</a>
 			<button onclick="login()" type="button">登录</button>
-	</form>
+		</form>
+
 	</div>
+	<div class="form-container sign-in-container" id="kghiden">
+		<form>
+			<h1>快捷登录</h1>
+			<div class="social-container">
+				<a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+				<a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+				<a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+			</div>
+			<a href="javaScript:zylogin()">快捷登录</a>
+			<input type="text" name="name"  id="phone" placeholder="手机号" />
+			<input type="text" name="password" id="code" placeholder="验证码" size="15"/>
+			<button onclick="getCode()" type="button">获取验证码</button>
+			<a href="javaScript:zylogin()">快捷登录</a>
+			<button onclick="phoneCodelogin()" type="button">登录</button>
+		</form>
+
+	</div>
+
 	<div class="overlay-container">
 		<div class="overlay">
 			<div class="overlay-panel overlay-left">
@@ -78,51 +96,117 @@
 
 
 
-  <script src="/loginstyle/index.js"></script>
+<script src="/loginstyle/index.js"></script>
 
 
 
 </body>
 <script>
-    function login() {
-        var name=  $("#name").val();
+	layui.use('layer', function(){})
+	var layer = layui.layer;
+	$(function () {
+		initkghiden()
+	})
+	function initkghiden(){
+		$("#kghiden").hide();
+		$("#hiden").show();
+	}
+	function kjlogin() {
+		//alert(1)
+		$("#kghiden").show();
+		$("#hiden").hide();
+	}
+	function zylogin() {
+		$("#kghiden").hide();
+		$("#hiden").show();
+	}
+
+	function getCode() {
+		var phone =$('#phone').val()
+		//  alert(phone);
+		$.ajax({
+			url:"/login/sendcode",
+			data:{
+				phone:phone,
+			},
+			async:true,
+			dataType:'json',
+			success:function (data) {
+				if(data.code==0){
+					alert(data.msg)
+				}else {
+					alert(data.msg)
+
+				}
+			}
+		})
+	}
+
+	function phoneCodelogin() {
+		var phone=$("#phone").val();
+		var code=$("#code").val();
+		$.ajax({
+			url:'/login/phoneLogin',
+			data:{
+				phone:phone,
+				code:code
+			},
+			success:function (data) {
+				if (data.code==0) {
+					layui.use('layer', function () {
+						var layer = layui.layer;
+						layer.msg(data.msg);
+					});
+					location.href='/page/find?url=show'
+				}else {
+					layui.use('layer', function () {
+						var layer = layui.layer;
+
+						layer.msg(data.msg);
+					})
+				}
+			}
+		})
+	}
+	function login() {
+		var name=  $("#name").val();
 		var password=  $("#password").val();
-        $.ajax({
-            url:"/login/queryLogin",
-            type:"post",
-            data:{
-            	name:name,
+		$.ajax({
+			url:"/login/queryLogin",
+			type:"post",
+			data:{
+				name:name,
 				password:password
 			},
-            success:function (data) {
-                if (data.code==0){
-                    location.href="/page/find?url=show"
-                }else {
-                    layui.use('layer', function(){
-                        var layer = layui.layer;
+			success:function (data) {
+				if (data.code==0){
+					location.href="/page/find?url=show"
+				}else {
+					/*layui.use('layer', function(){
+						var layer = layui.layer;*/
 
-                        layer.msg(data.msg);
-                    });
-                }
-            }
-        })
-    }
-    function addRegUser() {
+						layer.msg(data.msg);
+					/*});*/
+				}
+			}
+		})
+	}
+	function addRegUser() {
 		$.ajax({
 			url: '/login/addRegUser',
 			type: 'post',
 			data: $("#userFrom").serialize(),
 			success: function (data) {
 				if (data.code == 0) {
-					layui.use('layer', function () {
-						var layer = layui.layer;
+				/*	layui.use('layer', function () {
+						var layer = layui.layer;*/
 						layer.msg(data.msg);
-					});
+			/*		});*/
 				} else {
-					layui.use('layer', function () {
-						var layer = layui.layer;
+				/*	layui.use('layer', function () {
+						var layer = layui.layer;*/
 						layer.msg(data.msg);
-					});
+					/*});*/
 				}
 
 			}

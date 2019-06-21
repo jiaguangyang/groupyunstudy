@@ -12,7 +12,7 @@ import sun.reflect.generics.tree.Tree;
 import java.util.HashMap;
 import java.util.List;
 
-@FeignClient("loginservice")
+@FeignClient("loginservice1")
 public interface LoginService {
     @RequestMapping("login")
     @ResponseBody
@@ -47,7 +47,7 @@ public interface LoginService {
     @RequestMapping("addVideo")
     Boolean addVideo(@RequestBody Video video);
     @RequestMapping("queryProject")
-    HashMap<String, Object> queryProject(@RequestParam("page")Integer page,@RequestParam("limit") Integer limit,@RequestParam("teacherId1")Integer teacherId1);
+    HashMap<String, Object> queryProject(@RequestParam("page")Integer page,@RequestParam("limit") Integer limit);
     @RequestMapping("queryInstitutionLogin")
     HashMap<String, Object> queryInstitutionLogin(TeacherBean teacherBean);
     @RequestMapping("addInformation")
@@ -66,4 +66,12 @@ public interface LoginService {
     HashMap<String, Object> queryJgteacher(@RequestParam("page")Integer page,@RequestParam("limit") Integer limit,@RequestParam("teacherId")Integer teacherId);
     @RequestMapping("queryDingdan")
     HashMap<String, Object> queryDingdan(@RequestParam("page")Integer page,@RequestParam("limit") Integer limit);
+    @RequestMapping("phoneLogin")
+    HashMap<String, Object> phoneLogin(@RequestParam("phone")String phone,@RequestParam("code") Integer code);
+    @RequestMapping("queryMyVideoByid")
+    Video queryMyVideoByid(@RequestParam("id")Integer id);
+     @RequestMapping("updateVideoById")
+    Boolean updateVideoById(@RequestBody Video video);
+/*    @RequestMapping("querySp")
+    HashMap<String, Object> querySp(@RequestParam("page") Integer page,@RequestParam("limit") Integer limit);*/
 }

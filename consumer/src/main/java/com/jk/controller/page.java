@@ -3,6 +3,7 @@ package com.jk.controller;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import redis.clients.jedis.Jedis;
@@ -113,5 +114,14 @@ public class page {
     @RequestMapping("mydingdan")
     public String mydingdan(){
         return "mydingdan";
+    }
+    @RequestMapping("kjloginDialog")
+    public String kjloginDialog(){
+        return "kjloginDialog";
+    }
+    @RequestMapping("updatevideo")
+    public String updatevideo(Integer id, Model model){
+        model.addAttribute("id",id);
+        return "updatevideo";
     }
 }

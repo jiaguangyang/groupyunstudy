@@ -4,6 +4,7 @@ import com.jk.model.*;
 import org.apache.ibatis.annotations.Param;
 
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface LoginDao {
@@ -47,7 +48,7 @@ public interface LoginDao {
 
     void addVideo(Video video);
 
-    int queryCount();
+    int queryCount(String teacherId);
 
     List<Video> queryVideoById(@Param("start") int start,@Param("limit") Integer limit,@Param("teacherId") String teacherId);
 
@@ -76,4 +77,12 @@ public interface LoginDao {
     int queryDingdanCount(String userId);
 
     List<Dingdan> queryDingdan(@Param("start") int start,@Param("limit") Integer limit,@Param("userId") String userId);
+
+    User queryPhone(String phone);
+
+    int querySpCount(String userId);
+
+    Video queryMyVideoByid(Integer id);
+
+    void updateVideoById(Video video);
 }

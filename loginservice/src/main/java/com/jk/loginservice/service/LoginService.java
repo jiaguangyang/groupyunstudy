@@ -36,7 +36,7 @@ public interface LoginService {
 
     Boolean addVideo(Video video);
 
-    HashMap<String, Object> queryProject(Integer page, Integer limit,Integer teacherId1);
+    HashMap<String, Object> queryProject(Integer page, Integer limit);
 
     HashMap<String, Object> queryInstitutionLogin(TeacherBean teacherBean);
 
@@ -56,4 +56,12 @@ public interface LoginService {
     HashMap<String, Object> queryJgteacher(Integer page,Integer limit,Integer teacherId);
 
     HashMap<String, Object> queryDingdan(Integer page,Integer limit);
+
+    HashMap<String, Object> phoneLogin(String phone, Integer code);
+
+    Video queryMyVideoByid(Integer id);
+
+    Boolean updateVideoById(Video video);
+
+    /*HashMap<String, Object> querySp(Integer page, Integer limit);*/
 }

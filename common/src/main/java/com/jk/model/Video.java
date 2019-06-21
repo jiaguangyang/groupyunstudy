@@ -34,8 +34,9 @@ public class Video implements Serializable{
     @Field(type = FieldType.Keyword)
     private  String videoinfo;
     private String kechengfenlei;
-    private String videourl;
+   // private String videourl;
     private String summary;
     private String forPeople;
     private String teacherName;
+
 }

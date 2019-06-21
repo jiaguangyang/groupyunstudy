@@ -6,7 +6,6 @@ import com.jk.model.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
@@ -324,15 +323,15 @@ public class LoginServiceImpl implements LoginService {
   }
 
   @Override
-  public  HashMap<String, Object> queryProject(Integer page, Integer limit,Integer teacherId1) {
+  public  HashMap<String, Object> queryProject(Integer page, Integer limit) {
     HashMap<String, Object> map = new HashMap<>();
     Jedis jedis = jedisPool.getResource();
-    String teacherId=teacherId=jedis.get("teacherId");;
+    String teacherId=jedis.get("teacherId");;
 
 
 
 
-    int total=loginDao.queryCount();
+    int total=loginDao.queryCount(teacherId);
     int start=(page-1)*limit;
 
     List<Video> list = loginDao.queryVideoById(start,limit,teacherId);
@@ -523,8 +522,50 @@ public class LoginServiceImpl implements LoginService {
     map.put("count", total);
     map.put("code", 0);
     map.put("data", list);
+    jedis.close();
     return map;
   }
+
+  @Override
+  public HashMap<String, Object> phoneLogin(String phone, Integer code) {
+    HashMap<String, Object> hashMap = new HashMap<>();
+    Jedis jedis = jedisPool.getResource();
+    String phonecode = jedis.get("random"+phone);
+    Integer parseIntphonecode = Integer.parseInt(phonecode);
+    User user=loginDao.queryPhone(phone);
+    if (user==null){
+      hashMap.put("code", 1);
+      hashMap.put("msg", "手机不存在");
+      return hashMap;
+    }
+    if (!parseIntphonecode.equals(code)) {
+      hashMap.put("code", 2);
+      hashMap.put("msg", "验证码错误请重新发送");
+      return hashMap;
+    }
+    jedis.set("name",user.getName());
+    hashMap.put("code", 0);
+    hashMap.put("msg", "登陆成功");
+    jedis.close();
+    return hashMap;
+  }
+
+
+
+/*  @Override
+  public HashMap<String, Object> querySp(Integer page, Integer limit) {
+    HashMap<String, Object> map = new HashMap<>();
+    Jedis jedis = jedisPool.getResource();
+    String userId = jedis.get("name");
+    int total=loginDao.querySpCount(userId);
+    int start=(page-1)*limit;
+
+    List<Dingdan> list = loginDao.queryDingdan(start,limit,userId);
+    map.put("count", total);
+    map.put("code", 0);
+    map.put("data", list);
+    jedis.close();
+  }*/
 
   private List<JgTree> queryJgTreeByPid(Integer pid) {
     List<JgTree> treeBeanList=loginDao.queryJgTreeByPid(pid);
@@ -568,5 +609,21 @@ public class LoginServiceImpl implements LoginService {
     }
     return treeBeanList;
   }
+  @Override
+  public Video queryMyVideoByid(Integer id) {
+    return loginDao.queryMyVideoByid(id);
+  }
 
+  @Override
+  public Boolean updateVideoById(Video video) {
+    try {
+
+      loginDao.updateVideoById(video);
+      return true;
+    }catch (Exception e){
+      e.printStackTrace();
+      return false;
+    }
+
+  }
 }

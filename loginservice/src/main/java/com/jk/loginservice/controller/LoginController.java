@@ -104,8 +104,8 @@ public class LoginController {
     }
     @RequestMapping("queryProject")
     @ResponseBody
-    public  HashMap<String, Object> queryProject(@RequestParam("page")Integer page,@RequestParam("limit") Integer limit,@RequestParam("teacherId1")Integer teacherId1){
-        return loginService.queryProject(page,limit,teacherId1);
+    public  HashMap<String, Object> queryProject(@RequestParam("page")Integer page,@RequestParam("limit") Integer limit){
+        return loginService.queryProject(page,limit);
     }
     @RequestMapping("queryInstitutionLogin")
     @ResponseBody
@@ -153,5 +153,20 @@ public class LoginController {
     public HashMap<String,Object> queryDingdan(@RequestParam("page")Integer page,@RequestParam("limit")Integer limit ){
         return loginService.queryDingdan(page,limit);
     }
+    @RequestMapping("phoneLogin")
+    @ResponseBody
+    public HashMap<String,Object> phoneLogin(String phone,Integer code){
+        return loginService.phoneLogin(phone,code);
+    }
+    @RequestMapping("queryMyVideoByid")
+    @ResponseBody
+    public Video queryMyVideoByid(@RequestParam("id")Integer id) {
+        return loginService.queryMyVideoByid(id);
+    }
+    @RequestMapping("updateVideoById")
+    @ResponseBody
+    public Boolean updateVideoById(@RequestBody Video video){
+        return loginService.updateVideoById(video);
+    };
 
 }

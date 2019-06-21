@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -10,16 +10,17 @@
 </head>
 <body>
 <form class="layui-form" id="videoFrom">
+    <input type="hidden" name="id" th:value="${id}" id="id">
 <div class="layui-inline">
     <label class="layui-form-label">视频名称</label>
     <div class="layui-input-inline">
-        <input type="tel" name="videoName" lay-verify="video"  autocomplete="off" class="layui-input">
+        <input type="tel" name="videoName" id="videoName" lay-verify="video"  autocomplete="off" class="layui-input">
     </div>
 </div>
     <div class="layui-inline">
         <label class="layui-form-label">视频标题</label>
         <div class="layui-input-inline">
-            <input type="tel" name="videoTitle" lay-verify="video"  autocomplete="off" class="layui-input">
+            <input type="tel" name="videoTitle" id="videoTitle" lay-verify="video"  autocomplete="off" class="layui-input">
         </div>
     </div><br>
     <div class="layui-inline">
@@ -38,7 +39,7 @@
         <div class="layui-upload" >
             <input type="file" name="videourl" id="test8" >
             <button type="button" class="layui-btn" id="test9" >上传视频</button>
-            <input type="hidden" name="videourl" id="hiden" >
+            <input type="hidden" name="videourl" id="hiden">
         </div>
     </div>
     <div class="layui-inline">
@@ -47,31 +48,28 @@
             <input type="number" name="videoPrice" id="videoPrice" lay-verify="video"  autocomplete="off" class="layui-input">
         </div>
     </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">*课程类型</label>
+    <div class="layui-inline">
+        <label class="layui-form-label">课程类型</label>
         <div class="layui-input-inline">
-            <select name="kechengfenlei" lay-filter="zhuying" id="zy">
-                <option value="0">请选择</option>
-
-            </select>
+            <input type="tel" name="kechengfenlei" id="zy" lay-verify="video"  autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">*简介</label>
         <div class="layui-input-block">
-            <textarea placeholder="请输入内容" class="layui-textarea" name="videoinfo"></textarea>
+            <textarea placeholder="请输入内容" class="layui-textarea" name="videoinfo" id="videoinfo"></textarea>
         </div>
     </div>
     <div class="layui-inline">
         <label class="layui-form-label">适用人群</label>
         <div class="layui-input-inline">
-            <input type="tel" name="forPeople" lay-verify="video"  autocomplete="off" class="layui-input">
+            <input type="tel" name="forPeople" id="forPeople" lay-verify="video"  autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">*课程概述</label>
         <div class="layui-input-block">
-            <textarea placeholder="请输入内容" class="layui-textarea" name="summary"></textarea>
+            <textarea placeholder="请输入内容" class="layui-textarea" name="summary" id="summary"></textarea>
         </div>
     </div>
 
@@ -84,6 +82,10 @@
 </form>
 </body>
 <script type="text/javascript">
+    $(function () {
+        initqueryMyVideoByid();
+    })
+
 layui.use('upload', function(){
         var $ = layui.jquery
         ,upload = layui.upload;
@@ -150,7 +152,7 @@ layui.use('form',function () {
         })
     }
 
-    function uploadViden() {
+ /*   function uploadViden() {
         $.ajax({
             url:'/login/addViden',
             type:'post',
@@ -162,7 +164,7 @@ layui.use('form',function () {
                 });
             }
         })
-    }
+    }*/
 
     /*var uploadInst=upload.render({
                          elem: '#video'
@@ -224,5 +226,29 @@ layui.use('upload', function(){
         }
     });
 });
+function initqueryMyVideoByid() {
+    var id=$('#id').val()
+   $.ajax({
+       url:'/login/queryMyVideoByid',
+       data:{
+           id:id
+       },
+       success:function (data) {
+        $("#videoName").val(data.videoName);
+        $("#id").val(data.id);
+        $("#videoTitle").val(data.videoTitle);
+        $("#videoPrice").val(data.videoPrice);
+        $("#videoinfo").val(data.videoinfo);
+        $("#forPeople").val(data.forPeople);
+        $("#summary").val(data.summary);
+        $("#hiden1").val(data.videoImg);
+        $("#hiden").val(data.videourl);
+        $('#demo2').attr('src', data.videoImg);
+           $("#zy").val(data.kechengfenlei);
+
+
+       }
+   })
+}
 </script>
 </html>

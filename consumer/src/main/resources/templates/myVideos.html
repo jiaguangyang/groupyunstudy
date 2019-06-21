@@ -66,28 +66,28 @@
                             return '<input type="checkbox" value="' + row.videourl+ '" class="chk">';
                         }
                     },
-                      {field: 'videoName', width: 80, title: '视频名称', sort: true}
-                    , {field: 'teacherName', width: 80, title: '上传人'}
-                    , {field: 'videoTime', width: 150, title: '上传日期', sort: true}
-                    , {field: 'videoStatus', width: 80, title: '审核状态' ,templet: function (row) {
+                      {field: 'videoName',  title: '视频名称'}
+                    , {field: 'teacherName', title: '上传人'}
+                    , {field: 'videoTime',  title: '上传日期'}
+                    , {field: 'videoStatus',  title: '审核状态' ,templet: function (row) {
                         var html=''
-                            if (row.videoStatus=0){
-                                html='未审核'
+                            if (row.videoStatus==0){
+                                html='<font color="yellow"><b>未审核</b></font>'
                             }
-                            if (row.videoStatus=1){
-                                html='审核未通过'
+                            if (row.videoStatus==1){
+                                html='<a href="javascript:queryshenghe('+row.id+')"><font color="red">审核未通过</font></a>'
                             }
-                            if (row.videoStatus=2){
-                                html='审核成功'
+                            if (row.videoStatus==2||row.videoStatus==3){
+                                html='<font color="green">审核成功</font>'
                             }
                             return html;
                         }
 
                         }
-                    , {field: 'videoPrice', width: 100, title: '视频价格',sort: true} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
-                    , {field: 'videoinfo', width: 80, title: '视频简介', sort: true}
-                    , {field: 'summary', width: 80, title: '视频概述', sort: true}
-                    , {field: 'kechengfenlei', width: 80, title: '视频类型', sort: true}
+                    , {field: 'videoPrice',  title: '视频价格'} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                    , {field: 'videoinfo',  title: '视频简介'}
+                    , {field: 'summary',  title: '视频概述'}
+                    , {field: 'kechengfenlei',  title: '视频类型'}
                  ]
                 ],
                 id: 'id',
@@ -145,6 +145,9 @@
 
      }
 
+ }
+ function queryshenghe(id) {
+     location.href='/page/updatevideo?id='+id
  }
 </script>
 </html>

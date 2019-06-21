@@ -98,6 +98,7 @@ public class LoginController {
         params.put("sig", sig);
         params.put("templateid",ConstanConf.TEMPLATEID);
         Integer random=(int) (Math.random()*899999+100000);
+        jedis.setex("random"+phone,300,random+"");
         System.out.println(random);
 
         //redisTemplate.opsForValue().set(ConstanConf.SMS_LOHIN_CODE+"sss",random,ConstanConf.SMS_CODE_TIME, TimeUnit.MINUTES);
@@ -190,7 +191,6 @@ public class LoginController {
     @RequestMapping("uploadVideo")
     @ResponseBody
     public HashMap<String,Object> addVideo(MultipartFile videourl){
-
         String filename = videourl.getOriginalFilename();
         System.out.println(filename);
         HashMap<String, Object> map = new HashMap<>();
@@ -219,6 +219,7 @@ public class LoginController {
         map.put("msg","上传失败");
         map.put("imgId","");
         return  map;
+
     }
 
     @RequestMapping("addViden")
@@ -278,12 +279,17 @@ public class LoginController {
     @RequestMapping("addVideo")
     @ResponseBody
     public Boolean addVideo(Video video){
-        return loginService.addVideo(video);
+        if (video.getId()==null){
+        return loginService.addVideo(video);}
+        else {
+            return loginService.updateVideoById(video);
+        }
+
     }
     @RequestMapping("queryProject")
     @ResponseBody
-    public  HashMap<String, Object> queryProject(Integer page,Integer limit,Integer teacherId1){
-        return loginService.queryProject(page,limit,teacherId1);
+    public  HashMap<String, Object> queryProject(Integer page,Integer limit){
+        return loginService.queryProject(page,limit);
     }
     @RequestMapping("addInformation")
     @ResponseBody
@@ -320,9 +326,19 @@ public class LoginController {
     public HashMap<String,Object> queryJgteacher(Integer page,Integer limit ,Integer teacherId){
         return loginService.queryJgteacher(page,limit,teacherId);
     }
-    @RequestMapping("queryDingdan")
+    @RequestMapping("phoneLogin")
+    @ResponseBody
+    public HashMap<String,Object> phoneLogin(String phone,Integer code){
+        return loginService.phoneLogin(phone,code);
+    }
+  @RequestMapping("queryDingdan")
     @ResponseBody
     public HashMap<String,Object> queryDingdan(Integer page,Integer limit){
         return loginService.queryDingdan(page,limit);
+    }
+    @RequestMapping("queryMyVideoByid")
+    @ResponseBody
+    public Video queryMyVideoByid(Integer id){
+        return loginService.queryMyVideoByid(id);
     }
 }

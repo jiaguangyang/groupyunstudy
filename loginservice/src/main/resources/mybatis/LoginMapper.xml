@@ -58,15 +58,14 @@
     <update id="updateUserPassword">
            update t_user set password=#{password}
       </update>
-    <insert id="addVideo" parameterType="com.jk.model.Video">
-        insert into t_video (videoName,teacherId,videoTitle,videoImg,videoPrice,videoTime,videoStatus,quantity,videoinfo,forPeople,summary,videourl,kechengfenlei)
-        values (#{videoName},#{teacherId},#{videoTitle},#{videoImg},#{videoPrice},#{videoTime},0,0,#{videoinfo},#{forPeople},#{summary},#{videourl},#{kechengfenlei})
-    </insert>
-    <select id="queryCount" resultType="int">
-        SELECT count(1) FROM t_video v
+
+
+
+    <select id="queryCount" parameterType="string" resultType="int">
+        SELECT count(1) FROM t_video v where teacherId=#{teacherId}
     </select>
     <select id="queryVideoById" resultType="com.jk.model.Video">
-        SELECT * from t_video v LEFT JOIN t_teacher t ON v.teacherId=t.id
+        SELECT * from t_video v
          WHERE v.teacherId=#{teacherId}
         GROUP BY v.id   LIMIT #{start},#{limit}
     </select>
@@ -115,4 +114,18 @@
         select * from t_dingdan where username=#{userId}
          GROUP BY id   LIMIT #{start},#{limit}
     </select>
+    <select id="queryPhone" parameterType="string" resultType="com.jk.model.User">
+        select * from t_user where userPhone=#{phone}
+    </select>
+    <select id="queryMyVideoByid" parameterType="int" resultType="com.jk.model.Video">
+        select * from t_video where id=#{value}
+    </select>
+    <insert id="addVideo" parameterType="com.jk.model.Video">
+        insert into t_video (videoName,teacherId,videoTitle,videoImg,videoPrice,videoTime,videoStatus,quantity,videoinfo,forPeople,summary,videourl,kechengfenlei)
+        values (#{videoName},#{teacherId},#{videoTitle},#{videoImg},#{videoPrice},#{videoTime},0,0,#{videoinfo},#{forPeople},#{summary},#{videourl},#{kechengfenlei})
+    </insert>
+    <update id="updateVideoById" parameterType="com.jk.model.Video">
+        update t_video set videoName=#{videoName},videoTitle=#{videoTitle},videoImg=#{videoImg},videoinfo=#{videoinfo},forPeople=#{forPeople},videourl=#{videourl},kechengfenlei=#{kechengfenlei}
+        where id=#{id}
+    </update>
 </mapper>
