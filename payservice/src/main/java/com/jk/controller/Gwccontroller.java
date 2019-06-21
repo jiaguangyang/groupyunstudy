@@ -21,29 +21,23 @@ import java.util.*;
 public class Gwccontroller {
 
 
-
-      @Autowired
+    @Autowired
     GwcService gwcService;
     @Autowired
     JedisPool jedisPool;
 
-    @RequestMapping("dindan")
-  public   void dindan(String uname,String order, String gmtpayment,String invoiceamount,String videoName, String videourl){
-        gwcService.dindan(uname,order,gmtpayment,invoiceamount,videoName,videourl);
-    }
 
-
-     @RequestMapping("addgwc")
-     @ResponseBody
-    public String addgwc(Integer id){
+    @RequestMapping("addgwc")
+    @ResponseBody
+    public String addgwc(Integer id) {
         String str = "";
-         Jedis jedis = jedisPool.getResource();
-         //Gwc gwc = gwcService.FindGwc(id);
+        Jedis jedis = jedisPool.getResource();
+        //Gwc gwc = gwcService.FindGwc(id);
         // Video gwc2=new Video();
-         String uname = jedis.get("name");
-         List<Video> lists2 = new ArrayList<>();
-         List<String> jsonString = jedis.hmget("videolist", "video" + id);
-         Video video = JSON.parseObject(jsonString.get(0), Video.class);
+        String uname = jedis.get("name");
+        List<Video> lists2 = new ArrayList<>();
+        List<String> jsonString = jedis.hmget("videolist", "video" + id);
+        Video video = JSON.parseObject(jsonString.get(0), Video.class);
 
          /*List<String> list2=  jedis.lrange("food",0,-1);
          //获取所有的商品
@@ -57,42 +51,44 @@ public class Gwccontroller {
                  break;
              }
          }*/
-         List<Video> lists = new ArrayList<>();
-         List<String > list = jedis.lrange(uname,0,-1);
-         //获取当前购物车的商品
-         for (int j=0;j<list.size();j++){
-             Video gwc1 = JSON.parseObject(list.get(j), Video.class);
-             lists.add(gwc1);
-         }
-          if(uname!=null){
-              if (jedis.exists(uname)){
+        List<Video> lists = new ArrayList<>();
+        if (uname != null) {
 
-                  for (int z=0;z<lists.size();z++){
-                      if (lists.get(z).getId()==video.getId()){
-                          str="3";
-                          jedis.close();
-                          return  str;
-                      }
-                  }
+            if (jedis.exists(uname)) {
+                List<String> list = jedis.lrange(uname, 0, -1);
+                //获取当前购物车的商品
+                for (int j = 0; j < list.size(); j++) {
+                    Video gwc1 = JSON.parseObject(list.get(j), Video.class);
+                    lists.add(gwc1);
+                }
+                for (int z = 0; z < lists.size(); z++) {
+                    if (lists.get(z).getId() == id) {
+                        str = "3";
+                        jedis.close();
+                        return str;
+                    }
+                }
 
-                      jedis.rpush(uname,JSON.toJSONString(video));
-                      str="2";
-                  jedis.close();
-                      return  str;
+                jedis.rpush(uname,JSON.toJSONString(video));
+                str="2";
+                jedis.close();
+                return  str;
 
-              }else {
+            }else {
                   jedis.rpush(uname,JSON.toJSONString(video));
                   str="2";
                   jedis.close();
                   return  str;
               }
-          }else{
-              str="1";
-              jedis.close();
-              return  str;
-          }
+        } else {
+            str = "1";
+            jedis.close();
+            return str;
+        }
+       // return null;
         //return  str;
-     }
+    }
+
 
     @RequestMapping("findgwc")
     @ResponseBody

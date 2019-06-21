@@ -85,7 +85,7 @@ position:absolute;
 </div>
 <div style="float:right;margin-top:20px;">
     <pre><a href="/page/toteacherLogin" target="blank">管 理 后 台</a>   <a href="www.baidu.com" target="blank">我 的 学 习</a> &nbsp; &nbsp;<span id="status"></span>   <!-- <span th:text="${session.username}"></span>  --></pre></div>
-<div style="float:right;margin-top:20px;"> <a href="www.baidu.com"> <img src="/img/car.png"></a> </pre></div>
+<div style="float:right;margin-top:20px;"> <a href="/jgy/find?url=Gwc"> <img src="/img/car.png"></a> </pre></div>
 <div style="clear:both"></div>
 <ul class="layui-nav layui-bg-blue" lay-filter="">
     <li class="layui-nav-item"><a href="">首页</a></li>
@@ -123,6 +123,26 @@ position:absolute;
 <div style="clear:both"></div><br><br>
 </body>
 <script>
+    function youhui(stst) {
+        $.ajax({
+            url:"/youhui",
+            data:{state:stst},
+            success:function (data) {
+                if (data==1){
+                    alert("请先登录")
+                }
+                if (data==2){
+                    alert("领取成功")
+                }
+                if (data==3){
+                    alert("每人限领一张")
+                }
+
+            },err:function () {
+
+            }
+        })
+    }
     function btclick() {
         var keyWord=$("#currinputid").val();
         location.href="/jgy/SearchCurr?keyWord="+keyWord;

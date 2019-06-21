@@ -86,7 +86,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">*主营类目</label>
         <div class="layui-input-inline">
-            <select name="kechengfenlei" lay-filter="zhuying" id="zy">
+            <select name="zy" lay-filter="zhuying" id="zy">
                <option value="0">请选择</option>
 
             </select>
@@ -125,13 +125,14 @@
             async:true,
             dataType:'json',
             success:function (data) {
-                layui.use('layer', function(){
-                    var layer = layui.layer;
                     layer.msg(data.msg);
-                });
+
             }
         })
     }
+  layui.use('layer', function(){
+  });
+  var layer = layui.layer;
          //图片上传
         layui.use('upload', function(){
             var $ = layui.jquery

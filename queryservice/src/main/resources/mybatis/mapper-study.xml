@@ -21,5 +21,15 @@ t_video tv INNER JOIN t_teacher tt
 
     </select>
 
+    <insert id="dindan" >
 
+   insert into t_dingdan(username,videoorder,dealtime,dealmoney,videoname,videourl,videoid) values(#{uname},#{order},#{gmtpayment},#{invoiceamount},#{videoName},#{videourl},#{videoid})
+
+    </insert>
+
+    <insert id="addyouhui" parameterType="com.jk.model.Coupon">
+
+   insert into t_coupon(couponName,couponStatus,startTime,endTime,couponMoney,userName,state) values(#{couponName},#{couponStatus},#{startTime},#{endTime},#{couponMoney},#{userName},#{state})
+
+    </insert>
 </mapper>

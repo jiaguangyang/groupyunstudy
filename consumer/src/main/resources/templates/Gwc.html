@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="/js/jquery.min.js"></script>
+    <script src="/js2/layui/layui.all.js"></script>
+    <script src="/js2/layui/layui.js"></script>
+    <script src="/js2/jquery.min.js"></script>
     <!-- 引入bootstrap的css -->
     <link  href="/js/bootstrap/css/bootstrap.min.css" rel="stylesheet" >
     <!-- 引入bootstrap-treeview的css -->
@@ -65,15 +67,25 @@
     <table class="layui-hide" id="bootTab" lay-filter="test" ></table>
 </div>
 
-<div >
+<div style="margin-top: 50px" >
+    <span id="you"></span>
+</div>
+
+<div style="margin-top: 50px">
     <span id="jiesuan"  style="float: right"></span>
 </div>
 
+
+
 </body>
 <script type="text/javascript" th:inline="none">
+$(function () {
+    find();
+    //youhui();
 
+})
 
-    $(function (){
+    function find(){
         $("#bootTab").bootstrapTable({
             url:"/findgwc",
             method:"post",
@@ -132,7 +144,7 @@
            // pageSize: 2,                       //每页的记录行数（*）
            // pageList: [2,3,6,9,12],        //可供选择的每页的行数（*）
         });
-    })
+    }
     function delgwc(){
         var  a ="";
         var arr = document.getElementsByName("fuxuan")
@@ -194,10 +206,11 @@ function jieshuan() {
         type:"post",
         data:{ids:ids},
         success:function (data) {
-
+            youhui(data);
            c.innerHTML='<font size="5">合计:￥</font><font color="red" size="5">'+data+'</font>' +
                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
                '<button type="button" class="btn btn-secondary" onclick="zifu()">结算</button>'
+
         },error:function () {
         }
     })
@@ -208,7 +221,6 @@ $(function () {
     count();
 })
 $(function () {
-
     var ids="";
     var  c = document.getElementById("jiesuan")
     $.ajax({
@@ -220,6 +232,8 @@ $(function () {
             c.innerHTML='<font size="5">合计:￥</font><span id="jieshuan"><font color="red" size="5">'+data+'</font></span>' +
                 '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
                 '<button type="button" class="btn btn-secondary" onclick="zifu()">结算</button>'
+
+            youhui(data);
         },error:function () {
 
         }
@@ -244,7 +258,25 @@ $(function () {
         })
     }
 
+
+
+
+
+
+
+
+
      function  zifu() {
+         var d ="";
+         var b = document.getElementsByName("xuan")
+         var  c = document.getElementById("nn");
+         for (var i=0;i<b.length;i++){
+             if (b[i].checked==true){
+                 d =b[i].value;
+             }
+         }
+
+
 
              var  a ="";
              var arr = document.getElementsByName("fuxuan")
@@ -260,15 +292,49 @@ $(function () {
              $.ajax({
                  url:"/jieshuan",
                  type:"post",
-                 data:{ids:ids},
+                 data:{"ids":ids},
                  success:function (data) {
-                  location.href="/pay?money="+data;
+                  location.href="/pay?money="+data+"&you="+d;
                  },error:function () {
                  }
              })
 
 
            }
+
+function youhui(d){
+    var  c = document.getElementById("you")
+    $.ajax({
+        url:"/findyouhui",
+        success:function (data) {
+           if (data==null||data==""){
+
+          c.innerHTML="无优惠券"
+        }
+            if (d<200){
+
+                c.innerHTML="无可用的优惠券"
+            }
+
+
+        else {
+               c.innerHTML=' <img src="/tjq.jpg" height="50" width="100"    onclick="youhui(1)"/>' +
+                   '    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n' +
+                   '    <input type="radio" name="xuan" value="1" checked="true"/>是\n' +
+                   '    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n' +
+                   '    <input type="radio" name="xuan" value="2"/>否' +
+                   '<span id="nn"></span>' +
+                   '';
+           }
+        },error:function () {
+        }
+    })
+
+}
+
+
+
+
 
 
 

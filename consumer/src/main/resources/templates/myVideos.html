@@ -67,7 +67,6 @@
                         }
                     },
                       {field: 'videoName',  title: '视频名称'}
-                    , {field: 'teacherName', title: '上传人'}
                     , {field: 'videoTime',  title: '上传日期'}
                     , {field: 'videoStatus',  title: '审核状态' ,templet: function (row) {
                         var html=''
@@ -84,10 +83,10 @@
                         }
 
                         }
-                    , {field: 'videoPrice',  title: '视频价格'} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
-                    , {field: 'videoinfo',  title: '视频简介'}
-                    , {field: 'summary',  title: '视频概述'}
-                    , {field: 'kechengfenlei',  title: '视频类型'}
+                    , {field: 'videoPrice', width: 100, title: '视频价格',sort: true} //minWidth：局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                    , {field: 'videoinfo', width: 120, title: '视频简介'}
+                    , {field: 'summary', width: 120, title: '视频概述'}
+                    , {field: 'kechengfenlei', width: 80, title: '视频类型', sort: true}
                  ]
                 ],
                 id: 'id',

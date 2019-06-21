@@ -12,7 +12,7 @@ import sun.reflect.generics.tree.Tree;
 import java.util.HashMap;
 import java.util.List;
 
-@FeignClient("loginservice1")
+@FeignClient("loginservice")
 public interface LoginService {
     @RequestMapping("login")
     @ResponseBody
@@ -45,6 +45,7 @@ public interface LoginService {
     @RequestMapping("updateUserPassword")
     Boolean updateUserPassword(@RequestParam("password") String password);
     @RequestMapping("addVideo")
+    @ResponseBody
     Boolean addVideo(@RequestBody Video video);
     @RequestMapping("queryProject")
     HashMap<String, Object> queryProject(@RequestParam("page")Integer page,@RequestParam("limit") Integer limit);

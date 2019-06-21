@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>视频播放</title>
     <script src="/js/jquery.min.js"></script>
     <link rel="stylesheet" href="/js/layui/css/layui.css">
     <script src="/js/layui/layui.js"></script>
@@ -12,19 +12,12 @@
 </head>
 <body>
 <!--style="width:100%;height:100%;"-->
-        <div id="video" style="width: 600px;height: 300px" ></div>
-<h2>评价</h2> <a href="javascript:fanye(1)" data-page="2">上一页</a>
-第 &nbsp<input id="yeshu" style="width: 40px;height: 30px;text-align: center" value="1">页
-&nbsp;每页<select id="rows" style="width: 40px;height: 30px;">
-    <option value="5">5
-    <option value="10">10
-</select>条
-<a href="javascript:fanye(2)" data-page="2">下一页</a>
-<hr width="100%"  style="color: #9F9F9F"/>
-<form class="layui-form" id="commentsform">
+        <div id="video" style="width: 600px;height: 300px;float: left;margin-top: 50px"  ></div>
+<div style="float: left;">
+    <form class="layui-form" id="commentsform">
     <input type="hidden" id="videoid" name="videoid">
     <div class="layui-form-item">
-        <label class="layui-form-label">评论星</label>
+        <label class="layui-form-label">打分</label>
         <div class="layui-input-inline">
             <div id="test3"></div>
         </div>
@@ -50,12 +43,72 @@
         </div>
     </div>
 </form>
-<script  th:inline="javascript">
+</div>
+<div style="clear: both"></div>
+
+<hr width="100%"  style="color: #9F9F9F"/>
+<div style="float: left"> <h2>评价</h2> <a href="javascript:fanye(1)" data-page="2">上一页</a>
+    &nbsp<input id="yeshu" style="width: 40px;height: 30px;text-align: center" value="1">
+    &nbsp;每页<select id="rows" style="width: 40px;height: 30px;" onchange="initquery()">
+        <option value="5">5
+        <option value="10">10
+    </select>条
+    <a href="javascript:fanye(2)" data-page="2">下一页</a><br>
+    <span id="commentsid">
+    </span>
+
+</div>
+<script  >
+    function  initquery() {
+        queryComments($("#yeshu").val());
+    }
+    var rows=null;
+    function queryComments(page) {
+        var videoid=[[${id}]];
+        rows=$("#rows").val();
+        $.ajax({
+            url:"/jgy/queryComments",
+            type:"post",
+            data:{
+                videoid:videoid,
+                page:page,
+                rows:rows
+            },
+            success:function (result) {
+                bb=result.total;
+                var data=result.list;
+                $("#commentsid").html('');
+                for (var i=0;i<data.length;i++){
+                    var str='';
+                    str+=' <div style="margin-left: 30px">'+ data[i].commentName+':<div id="rate'+i+'"></div><br>'+data[i].commentContent+'</div><br>';
+                    $("#commentsid").append(str);
+                    ratestyle(i,data[i].commentGrade);
+                }
+
+            },error:function () {
+
+            }
+        });
+        function ratestyle(i,grade){
+            layui.use('rate', function(){
+                var rate = layui.rate;
+                 rate.render({
+                    elem: '#rate'+i,
+                    length:5,
+                    value:grade,
+                    half:true,
+                    readonly:true
+                });
+            });
+        }
+    }
+
+    </script>
+<script th:inline="javascript">
     function addcomments() {
         layedit.sync(content);
         $("#videoid").val([[${id}]]);
         var data=$("#commentsform").serialize();
-        alert(data);
         $.ajax({
             url:"/addComment",
             type:"post",
@@ -87,28 +140,12 @@ $(function () {
     queryComments(1);
 });
     var bb='';
-    function queryComments(page) {
-        var videoid=[[${id}]];
-        $.ajax({
-            url:"/jgy/queryComments",
-            type:"post",
-            dat:{
-                videoid:videoid,
-                page:page,
-                rows:$("#rows").val()
-            },
-            success:function (data) {
-              bb=data.length;
-            },error:function () {
 
-            }
-        });
-    }
 
     /*分页*/
     function fanye(type){
         var a=parseInt($("#yeshu").val());
-        var b=Math.ceil(parseInt(bb)/pageSize);
+        var b=Math.ceil(parseInt(bb)/rows);
         if(type==1) {
             if (a == 1) {
                 layer.msg("已经是首页");
@@ -131,7 +168,10 @@ $(function () {
     var layer=   layui.layer;
     layui.use(['layer','layedit','rate'], function(){
          layedit = layui.layedit;
-         content= layedit.build('commentContent'); //建立编辑器
+         content= layedit.build('commentContent',{
+             height:200
+        });
+         //建立编辑器
         var rate = layui.rate;
         //半星效果
         rate.render({

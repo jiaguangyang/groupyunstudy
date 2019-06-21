@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface LoginService {
-    HashMap<String, Object> login(String name ,String password);
+    HashMap<String, Object> login(String name, String password);
 
     List<TeacherBean> queryZhuying();
 
@@ -51,11 +51,11 @@ public interface LoginService {
 
     Boolean updateInPassword(String password);
 
-    HashMap<String, Object> queryJgTeacher(Integer page,Integer limit);
+    HashMap<String, Object> queryJgTeacher(Integer page, Integer limit);
 
-    HashMap<String, Object> queryJgteacher(Integer page,Integer limit,Integer teacherId);
+    HashMap<String, Object> queryJgteacher(Integer page, Integer limit, Integer teacherId);
 
-    HashMap<String, Object> queryDingdan(Integer page,Integer limit);
+    HashMap<String, Object> queryDingdan(Integer page, Integer limit);
 
     HashMap<String, Object> phoneLogin(String phone, Integer code);
 

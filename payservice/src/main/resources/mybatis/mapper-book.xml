@@ -5,10 +5,6 @@
 
 <mapper namespace="com.jk.mapper.GwcMapper">
 
-    <insert id="dindan" >
 
-   insert into t_dingdan(username,videoorder,dealtime,dealmoney,videoname,videourl) values(#{uname},#{order},#{gmtpayment},#{invoiceamount},#{videoName},#{videourl})
-
-    </insert>
 
 </mapper>

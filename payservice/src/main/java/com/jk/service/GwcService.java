@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface GwcService {
 
-    void dindan(String uname, String order, String gmtpayment, String invoiceamount, String videoName, String videourl);
+
 }

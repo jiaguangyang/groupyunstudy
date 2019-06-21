@@ -4,11 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.domain.AlipayTradePayModel;
+import com.jk.model.Coupon;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.jk.config.ZfbConfig;
 import com.jk.model.Video;
+import com.jk.rmi.ThisClient;
 import com.jk.rmi.payService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +42,45 @@ public class payController {
 
     @Autowired
     private JedisPool jedisPool;
+
+    @Autowired
+    private ThisClient thisClient;
+
+    @RequestMapping("youhui")
+    @ResponseBody
+    public  String  youhui(String state){
+        Jedis jedis = jedisPool.getResource();
+
+        String str = "";
+        String uname = jedis.get("name");
+
+        if (uname!=null){
+            String  yhj = thisClient.youhui(uname,state);
+            if(yhj.equals("1")){
+                str="3";
+            }else {
+                str="2";
+                thisClient.addyouhui(state,uname);
+            }
+        }else{
+            str="1";
+            jedis.close();
+            return str;
+
+        }
+        jedis.close();
+        return str;
+    }
+
+    @RequestMapping("findyouhui")
+    @ResponseBody
+    public Coupon findyouhui(){
+        Jedis jedis = jedisPool.getResource();
+        String uname = jedis.get("name");
+        Coupon coupon    = thisClient.addyouhui2(uname);
+
+        return  coupon;
+    }
 
     @RequestMapping("addgwc")
     @ResponseBody
@@ -72,13 +114,36 @@ public class payController {
     }
 
     @RequestMapping("/pay")
-    public void pay(HttpServletResponse response, String money) throws Exception {
+    public void pay(HttpServletResponse response, String money,String id,String you) throws Exception {
+        Jedis jedis = jedisPool.getResource();
+        String  moneys ="";
+        if (you!=null){
+            jedis.set("you",you);
+
+            if (you.equals("1")){
+                Integer m = Integer.valueOf(money);
+                Integer a = m-100;
+                moneys  = a.toString();
+            }else{
+                moneys  = money;
+            }
+
+        }else{
+            moneys  = money;
+        }
+        moneys  = money;
+
+
+        if(StringUtils.isNotEmpty(id)){
+            jedis.set("jie",id);
+            jedis.close();
+        }
         // 模拟从前台传来的数据
         Integer number= (int)(Math.random()*8999+1000);
         long date= new Date().getTime();
         String orderNo =date+number.toString(); // 生成订单号// 生成订单号
         System.out.println("生成订单号"+orderNo);
-        String totalAmount = money; // 支付总金额
+        String totalAmount = moneys; // 支付总金额
         String subject = "网易云课堂"; // 订单名称
         System.out.println("订单名称"+subject);
         String body = "reading"; // 商品描述
@@ -194,17 +259,28 @@ public class payController {
                 Video gwc = JSON.parseObject(list.get(i), Video.class);
                 lists.add(gwc);
             }
-            for (int i=0;i<lists.size();i++){
-                for (int z=0;z<ints.length;z++){
-                    if(lists.get(i).getId()==ints[z]){
-                        Video video = lists.get(i);
-                        jedis.lrem(uname,1, JSON.toJSONString(lists.get(i)));
-                        payservice.dindan(uname,order,gmtpayment,invoiceamount,video.getVideoName(),video.getVideourl());
+            if (lists.size()!=0){
+                for (int i=0;i<lists.size();i++){
+                    for (int z=0;z<ints.length;z++){
+                        if(lists.get(i).getId()==ints[z]){
+                            Video video = lists.get(i);
+                            jedis.lrem(uname,1, JSON.toJSONString(lists.get(i)));
+                            thisClient.dindan(uname,order,gmtpayment,invoiceamount,video.getVideoName(),video.getVideourl(),video.getId());
 
+                        }
                     }
                 }
+                // jedis.del("name");
+
+            }else{
+                List<String> videolist = jedis.hmget("videolist", "video" + ints[0]);
+                Video video = JSON.parseObject(videolist.get(0), Video.class);
+                thisClient.dindan(uname,order,gmtpayment,invoiceamount,video.getVideoName(),video.getVideourl(),video.getId());
             }
-           // jedis.del("name");
+            String you = jedis.get("you");
+            if (you.equals("1")){
+                thisClient.updyou(uname);
+            }
             jedis.del("jie");
             jedis.close();
         } else {

@@ -32,7 +32,7 @@ public interface LoginDao {
 
     String queryTeacherById(Integer id);
 
-    void updatePassword(@Param("teacherId") String teacherId,@Param("password") String password);
+    void updatePassword(@Param("teacherId") String teacherId, @Param("password") String password);
 
     void addRegUser(User user);
 
@@ -44,13 +44,13 @@ public interface LoginDao {
 
     void updateUserById(User user);
 
-    void updateUserPassword(@Param("userId")String userId,@Param("password") String password);
+    void updateUserPassword(@Param("userId") String userId, @Param("password") String password);
 
     void addVideo(Video video);
 
     int queryCount(String teacherId);
 
-    List<Video> queryVideoById(@Param("start") int start,@Param("limit") Integer limit,@Param("teacherId") String teacherId);
+    List<Video> queryVideoById(@Param("start") int start, @Param("limit") Integer limit, @Param("teacherId") String teacherId);
 
     Institutions queryInstitutionLogin(String teacherAccount);
 
@@ -64,19 +64,19 @@ public interface LoginDao {
 
     void updateInformation(Institutions institutions);
 
-    void updateInPassword(@Param("jgId")String jgId,@Param("password") String password);
+    void updateInPassword(@Param("jgId") String jgId, @Param("password") String password);
 
     int queryJgTeacherCount(String teacherId);
 
-    List<TeacherBean> queryJgTeacher(@Param("start") int start,@Param("limit") Integer limit,@Param("teacherId") String teacherId);
+    List<TeacherBean> queryJgTeacher(@Param("start") int start, @Param("limit") Integer limit, @Param("teacherId") String teacherId);
 
     int queryJgTeacherCountByTeachId(Integer teacherId);
 
-    List<Video> queryJgteacherByTeachId(@Param("start") int start,@Param("limit") Integer limit,@Param("teacherId") Integer teacherId);
+    List<Video> queryJgteacherByTeachId(@Param("start") int start, @Param("limit") Integer limit, @Param("teacherId") Integer teacherId);
 
     int queryDingdanCount(String userId);
 
-    List<Dingdan> queryDingdan(@Param("start") int start,@Param("limit") Integer limit,@Param("userId") String userId);
+    List<Dingdan> queryDingdan(@Param("start") int start, @Param("limit") Integer limit, @Param("userId") String userId);
 
     User queryPhone(String phone);
 

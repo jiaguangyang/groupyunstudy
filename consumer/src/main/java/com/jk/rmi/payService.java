@@ -30,6 +30,4 @@ public interface payService {
     @ResponseBody
     Integer count();
 
-    @RequestMapping("dindan")
-    void dindan(@RequestParam("uname")String uname, @RequestParam("order")String order,@RequestParam("gmtpayment") String gmtpayment,@RequestParam("invoiceamount") String invoiceamount, @RequestParam("videoName")String videoName, @RequestParam("videourl")String videourl);
 }

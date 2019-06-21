@@ -102,7 +102,7 @@ public class EsController {
      *   与数据库同步
      * @return
      */
-    @RequestMapping("/syncDb")
+    @RequestMapping("syncDb")
     @ResponseBody
     public boolean syncDb() {
         try {
@@ -134,7 +134,7 @@ public class EsController {
             stringObjectMap.put("summary",vi.getSummary());
             stringObjectMap.put("score",4.5);
             String Ftlsite = "";
-            if(vi.getVideoPrice()==null){
+            if(vi.getVideoPrice()==null||vi.getVideoPrice()==0){
                 stringObjectMap.put("videourl",vi.getVideourl());
                 Ftlsite="freeVideo";
             }else{

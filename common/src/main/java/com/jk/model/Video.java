@@ -8,13 +8,11 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.io.Serializable;
-import java.lang.annotation.Documented;
 import java.util.Date;
 
 @Data
 @Document(indexName = "wangyistudy",type = "video",shards = 1,replicas = 0)
-public class Video implements Serializable{
+public class Video{
     @Id
     private  Integer id;
     @Field(type = FieldType.Keyword)
@@ -34,9 +32,7 @@ public class Video implements Serializable{
     @Field(type = FieldType.Keyword)
     private  String videoinfo;
     private String kechengfenlei;
-   // private String videourl;
     private String summary;
     private String forPeople;
     private String teacherName;
-
 }

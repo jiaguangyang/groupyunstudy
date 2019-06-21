@@ -14,7 +14,7 @@ public class TeacherBean implements Serializable{
     private String email;
     private String jieshao;
 
-    private String companyLogo;
+    private String videoImg;
     private String zy;
     private Integer chec;
     private Integer type;

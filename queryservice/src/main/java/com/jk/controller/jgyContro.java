@@ -1,14 +1,14 @@
 package com.jk.controller;
 
 import com.jk.model.Comment;
+import com.jk.model.Coupon;
 import com.jk.model.Video;
 import com.jk.service.jgyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.core.query.IndexQuery;
-import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.*;
@@ -55,8 +55,38 @@ public class jgyContro {
 
     @RequestMapping("queryComments")
     @ResponseBody
-    public List<Comment> queryComments(Integer videoid,Integer page,Integer rows){
+    public HashMap<String,Object> queryComments(Integer videoid,Integer page,Integer rows){
         return  jgyservice.queryComments(videoid,page,rows);
+    }
+
+    @RequestMapping("dindan")
+    @ResponseBody
+    public   boolean dindan(String uname,String order, String gmtpayment,String invoiceamount,String videoName, String videourl,Integer videoid){
+       return jgyservice.dindan(uname,order,gmtpayment,invoiceamount,videoName,videourl,videoid);
+    }
+
+    @RequestMapping("addyouhui")
+    @ResponseBody
+  public   void addyouhui(String state,String uname){
+        jgyservice.addyouhui(state,uname);
+    }
+
+    @RequestMapping("youhui")
+    @ResponseBody
+    public String youhui(String uname, String state){
+        return jgyservice.youhui(uname,state);
+    }
+
+    @RequestMapping("addyouhui2")
+    @ResponseBody
+    public Coupon addyouhui2(String uname){
+   return jgyservice.addyouhui2(uname);
+    }
+
+    @RequestMapping("updyou")
+    @ResponseBody
+    public  void updyou(String uname){
+        jgyservice.updyou(uname);
     }
 
 }

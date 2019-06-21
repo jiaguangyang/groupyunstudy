@@ -43,6 +43,7 @@ public class LoginController {
     public String buyVideo(Integer vid){
         Jedis jedis = jedisPool.getResource();
         String userId = jedis.get("userId");
+        jedis.close();
         if (StringUtils.isNotEmpty(userId)){
             return"";
         }
@@ -88,6 +89,7 @@ public class LoginController {
         if (code!=null&&!code.equals("")&&!code.equals("null")) {
             result.put(phone+"code", 2);
             result.put("msg","请在一分钟后发送");
+            jedis.close();
             return result;
         }
         params.put("accountSid", ConstanConf.ACCOUNTSID);
@@ -160,6 +162,7 @@ public class LoginController {
                     String uploadUrl = AliyunOSSUtil.upLoad(newFile);
 
                     map.put("imgId",uploadUrl);
+                    map.put("msg","上传成功");
                     return  map;
                 }
 
@@ -206,7 +209,6 @@ public class LoginController {
                     // 上传到OSS
                     String uploadUrl = AliyunOSSUtil.upLoad(newFile);
                     System.out.println(uploadUrl);
-
                     map.put("imgId",uploadUrl);
                     map.put("msg","上传成功");
                     return  map;

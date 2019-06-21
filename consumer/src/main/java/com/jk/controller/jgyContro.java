@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class jgyContro {
 
     @RequestMapping("queryComments")
     @ResponseBody
-    public List<Comment> queryComments(Integer videoid,Integer page,Integer rows){
+    public HashMap<String,Object> queryComments(Integer videoid, Integer page, Integer rows){
        return  thisClient.queryComments(videoid,page,rows);
     }
 

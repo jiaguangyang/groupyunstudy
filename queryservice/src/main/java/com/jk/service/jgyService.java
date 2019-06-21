@@ -1,6 +1,7 @@
 package com.jk.service;
 
 import com.jk.model.Comment;
+import com.jk.model.Coupon;
 import com.jk.model.Video;
 
 import java.util.HashMap;
@@ -20,5 +21,15 @@ public interface jgyService {
 
     void queryVideoAll();
 
-    List<Comment> queryComments(Integer videoid,Integer page,Integer rows);
+    HashMap<String,Object> queryComments(Integer videoid,Integer page,Integer rows);
+
+    boolean dindan(String uname, String order, String gmtpayment, String invoiceamount, String videoName, String videourl,Integer videoid);
+
+    void addyouhui(String state, String uname);
+
+    String youhui(String uname, String state);
+
+    Coupon addyouhui2(String uname);
+
+    void updyou(String uname);
 }

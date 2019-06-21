@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.jk.mapper.jgyMapper;
 import com.jk.model.Comment;
+import com.jk.model.Coupon;
 import com.jk.model.Ossbean;
 import com.jk.model.Video;
 import org.apache.commons.lang.StringUtils;
@@ -63,7 +64,7 @@ public class jgyServiceImpl implements jgyService {
         List<Video> list1 = new ArrayList<>();
         int listindex=0;
         for (int i=0;i<5;i++){
-            listindex = random.nextInt(list.size() - 1);
+            listindex = random.nextInt(list.size());
             list1.add(list.get(listindex));
             list.remove(listindex);
         }
@@ -86,7 +87,7 @@ public class jgyServiceImpl implements jgyService {
         List<Video> list2 = new ArrayList<>();
         int listindex=0;
         for (int i=0;i<5;i++){
-            listindex = random.nextInt(list.size() - 1);
+            listindex = random.nextInt(list.size());
             list2.add(list.get(listindex));
             list.remove(listindex);
         }
@@ -109,33 +110,96 @@ public class jgyServiceImpl implements jgyService {
         List<Video> list2 = new ArrayList<>();
         int listindex=0;
         for (int i=0;i<5;i++){
-            listindex = random.nextInt(list.size() - 1);
+            listindex = random.nextInt(list.size());
             list2.add(list.get(listindex));
             list.remove(listindex);
         }
+
         return list2;
     }
 
     @Override
     public void queryVideoAll() {
-      List<Video> list= jgymapper.queryVideoAll();
+
         Jedis jedis = jedisPool.getResource();
-        HashMap<String, String> map = new HashMap<>();
-        for (Video video:list){
-              String jsonString = JSON.toJSONString(video);
-              map.put("video"+video.getId(),jsonString);
-          }
-        jedis.hmset("videolist",map);
+            List<Video> list= jgymapper.queryVideoAll();
+            HashMap<String, String> map = new HashMap<>();
+            for (Video video:list){
+                String jsonString = JSON.toJSONString(video);
+                map.put("video"+video.getId(),jsonString);
+            }
+            jedis.hmset("videolist",map);
+
+
         jedis.close();
     }
 
     @Override
-    public List<Comment> queryComments(Integer videoid,Integer page,Integer rows) {
+    public HashMap<String,Object> queryComments(Integer videoid,Integer page,Integer rows) {
+        HashMap<String, Object> map = new HashMap<>();
         Criteria criteria = new Criteria();
         criteria.and("videoid").is(videoid);
         List<Comment> list = mongoTemplate.find(new Query(criteria).with(new Sort(Sort.Direction.DESC, "commentDate")).skip((page - 1) * rows).limit(rows), Comment.class, "Comment");
-        return list;
+        long count = mongoTemplate.count(new Query(criteria), "Comment");
+        map.put("list",list);
+        map.put("total",count);
+        return map;
     }
 
+    @Override
+    public boolean dindan(String uname, String order, String gmtpayment, String invoiceamount, String videoName, String videourl,Integer videoid) {
+       boolean flag;
+        try{
+            jgymapper.dindan(uname,order,gmtpayment,invoiceamount,videoName,videourl,videoid);
+            flag=true;
+        }catch (Exception e){
+            e.printStackTrace();
+            flag=false;
+        }
+        return flag;
+    }
+
+    @Override
+    public void addyouhui(String state, String uname) {
+        Coupon coupon = new Coupon();
+        if (state.equals("1")){
+            Date date = new Date();
+            long time = date.getTime();
+            long day = 7*24*60*60*1000;
+            time+=day;
+            coupon.setCouponMoney(100.00);
+            coupon.setCouponName("全民优惠,限时领取");
+            coupon.setState(state);
+            coupon.setUserName(uname);
+            coupon.setCouponStatus(1);
+            coupon.setStartTime(date);
+            coupon.setEndTime(new Date(time));
+            jgymapper.addyouhui(coupon);
+        }
+
+    }
+
+    @Override
+    public String youhui(String uname, String state) {
+        String yhj ="";
+        Coupon coupon = jgymapper.youhui(uname,state);
+        if(coupon!=null){
+            yhj="1";
+        }else {
+            yhj="2";
+        }
+        return yhj;
+    }
+
+    @Override
+    public Coupon addyouhui2(String uname) {
+        Coupon coupon =  jgymapper.addyouhui2(uname);
+        return coupon;
+    }
+
+    @Override
+    public void updyou(String you) {
+        jgymapper.updyou(you);
+    }
 
 }

@@ -26,7 +26,6 @@ public class EsServiceImpl implements EsService{
     @Override
     public void addComment(Comment comment) {
         Jedis jedis = jedisPool.getResource();
-        jedis.setex("name",60,"张三");
         comment.setCommentId(UUID.randomUUID().toString());
         comment.setCommentDate(new Date());
         comment.setCommentName(jedis.get("name"));
@@ -50,7 +49,7 @@ public class EsServiceImpl implements EsService{
     private List<IndexQuery> getQuery(List<Video> list) {
         List<IndexQuery> queryList = new ArrayList<>();
         for (Video esProduct : list) {
-            IndexQuery query = new IndexQueryBuilder().withId(esProduct.getId().toString()).withObject(esProduct).build();
+            IndexQuery query = new IndexQueryBuilder().withId(esProduct.getId().toString()).withObject(esProduct).withIndexName("wangyistudy").withType("video").build();
             queryList.add(query);
         }
         return queryList;
