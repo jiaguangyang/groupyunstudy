@@ -107,7 +107,6 @@
 
     }
     function openLayer() {
-        debugger;
         var arr = $("[class=chk]:checked");
         var arr1=$("input[name='url']");
          var url=arr1[0].value;
@@ -119,20 +118,7 @@
        location.href='/jgy/toPlayerVideo?url='+url+'&&'+'id='+id;
 
 
-        /*else {
-            var url = arr[0].value
-            layer.open({
-                type: 2,
-                title: false,
-                area: ['630px', '360px'],
-                shade: 0.8,
-                maxmin: true,
-                closeBtn: 0,
-                shadeClose: true,
-                content: url
-            });
 
-        }*/
     }
 </script>
 </html>

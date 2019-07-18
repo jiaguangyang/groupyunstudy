@@ -9,10 +9,6 @@ import com.jk.model.Ossbean;
 import com.jk.model.Video;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -27,8 +23,8 @@ public class jgyServiceImpl implements jgyService {
     @Autowired
     private JedisPool jedisPool;
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
+   /* @Autowired
+    private MongoTemplate mongoTemplate;*/
 
 
     @Override
@@ -137,12 +133,12 @@ public class jgyServiceImpl implements jgyService {
     @Override
     public HashMap<String,Object> queryComments(Integer videoid,Integer page,Integer rows) {
         HashMap<String, Object> map = new HashMap<>();
-        Criteria criteria = new Criteria();
+       /* Criteria criteria = new Criteria();
         criteria.and("videoid").is(videoid);
         List<Comment> list = mongoTemplate.find(new Query(criteria).with(new Sort(Sort.Direction.DESC, "commentDate")).skip((page - 1) * rows).limit(rows), Comment.class, "Comment");
         long count = mongoTemplate.count(new Query(criteria), "Comment");
         map.put("list",list);
-        map.put("total",count);
+        map.put("total",count);*/
         return map;
     }
 
